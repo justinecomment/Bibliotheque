@@ -1,13 +1,22 @@
 <template>
   <div id="app">
+    <div class="header"></div>
     <img src="./assets/img/header.jpg" />
-    <h2>Bibliotheque</h2>
+    <app-navigation></app-navigation>
+    <router-link to="/" class="title">Bibliotheque</router-link>
+    <p>Blablabla</p>
+
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
+import Navigation from './components/Navigation.vue';
+
 export default {
-  
+  components:{
+    appNavigation: Navigation
+  }
 }
 </script>
 
@@ -15,18 +24,45 @@ export default {
   body{
     margin: 0;
     padding: 0;
+    font-family: Calibri , Arial;
   }
 
-  #app {
-
+  a{
+    text-decoration: none;
   }
 
   img{
     width: 100%;
   }
 
-  h2{
-    font-family: Calibri , impact;
+  .title, p{
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    color: white;
+  }
+
+  .title{
+    top: 70px;
+    font-size: 25px;
+  }
+
+  p{
+    top: 116px;
+  }
+
+  #Navigation{
+    position: absolute;
+    top: 8px;
+    width: 100%;
+    padding: 0px 50px;
+    box-sizing: border-box;
+  }
+
+  @media screen and (max-width: 250px) {
+    img{
+      width: 100%;
+    }
   }
 
 </style>
