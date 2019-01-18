@@ -52,7 +52,6 @@ export default {
   }
 
   a{
-    /* padding: 19px 18px; */
     cursor: pointer;
     display: flex;
     align-items: center;

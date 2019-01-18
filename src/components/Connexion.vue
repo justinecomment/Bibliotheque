@@ -36,7 +36,6 @@ export default {
     display: flex;
     flex-direction: column;
     width: 400px;
-    /* margin: 4% 100%; */
   }
 
    .md-field:after, .md-field:before{
