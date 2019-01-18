@@ -1,55 +1,82 @@
 <template>
   <div id="Connexion">
-    <div class="button">
-      <h5>Connexion</h5>
-      <h5>Creer un compte</h5>
-    </div>
+    <section>
+      <div class="menu-btn">
+        <button @click="connexionHandle('connexion')">Connexion</button>
+        <button @click="connexionHandle('creer')">Créer un compte</button>
+      </div>
+      <md-field md-clearable>
+        <label>Pseudo</label>
+        <md-input v-model="formData.pseudo"></md-input>
+      </md-field>
+      <md-field md-clearable>
+        <label>Mot de Passe</label>
+        <md-input v-model="formData.password"></md-input>
+      </md-field>
 
-    <md-field md-clearable>
-      <label>Pseudo</label>
-      <md-input v-model="pseudo"></md-input>
-    </md-field>
-    <md-field md-clearable>
-      <label>Mot de Passe</label>
-      <md-input v-model="password"></md-input>
-    </md-field>
+      <md-field md-clearable v-show="btnSelect ==='creer'">
+        <label>Confirmer le Mot de Passe</label>
+        <md-input v-model="formData.confirmPassword"></md-input>
+      </md-field>
 
-    <button>Se connecter</button>
+      <button class="btn-connection">Se connecter</button>
+    </section>
   </div>
 </template>
 
 <script>
-export default {
-  data: () => ({
-      pseudo: null,
-      password: null
-    })
-}
+  export default {
+    data(){
+      return{
+        formData:{
+          pseudo: null,
+          password: null,
+          confirmPassword: null
+        },
+        btnSelect: ''
+      }
+    },
+    methods:{
+      connexionHandle(e){
+        this.btnSelect = e;
+      }
+    }
+  }
 </script>
 
 <style scoped>
   #Connexion{
-    background-color: #fff;
-    border-radius: 2px;
-    padding: 7% 5%;
-    box-shadow: 2px 2px #cdcdcd;
     display: flex;
     flex-direction: column;
-    width: 400px;
+    background-color: #fff;
+    position: relative;
+    border-radius: 2px;
+    padding: 20px;
+    box-shadow: 2px 2px #cdcdcd;
+    max-width: 500px;
+    min-height: 300px;
+    width: 100%;
+  }
+
+  section{
+    margin: 0 auto;
+    width: 70%;
   }
 
    .md-field:after, .md-field:before{
     border: 0.5px solid grey;
   }
 
-  .button{
+  .menu-btn{
     display: flex;
     justify-content: space-between;
     color: #9670bd;
     font-weight: 600;
   }
 
-  button{
+  .btn-connection{
+    position: absolute;
+    bottom: 30px;
     background-color: #37cce5;
     border: none;
     border-radius: 15px;
@@ -57,7 +84,21 @@ export default {
     color: #fff;
     width: 60%;
     margin: auto;
-    margin-top: 20px;
+    margin-top: 75px;
+    align-self: center;
   } 
+
+  .md-field {
+    margin: 0px 0px;
+  }
+
+  button{
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    color: #9670bd;
+    font-weight: 900;
+    font-size: 20px;
+  }
 
 </style>
