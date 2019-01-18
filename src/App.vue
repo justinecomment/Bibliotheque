@@ -25,14 +25,17 @@ export default {
     margin: 0;
     padding: 0;
     font-family: Calibri , Arial;
+    background-color: #eef0f5;
+  }
+
+  #app{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   a{
     text-decoration: none;
-  }
-
-  img{
-    width: 100%;
   }
 
   .title, p{
@@ -43,12 +46,12 @@ export default {
   }
 
   .title{
-    top: 70px;
+    top: 100px;
     font-size: 25px;
   }
 
   p{
-    top: 116px;
+    top: 140px;
   }
 
   #Navigation{
