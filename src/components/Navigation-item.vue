@@ -1,11 +1,15 @@
 <template>
   <div id="Nav-item">
-    <div class="item" v-for="(Data, index) in data" :key="index">
 
-      <router-link to="" @click.native="openDropDown(index)">{{Data.name}}</router-link>
-      <div class="dropdown" v-if="showItems">
-        <router-link to="" v-for="(subMenu, index) in Data.subMenus" :key="index">{{subMenu.name}}</router-link>
+    <div @click="clickHandle(index)" class="item" v-for="(entry, index) in data" :key="index">
+      {{entry.name}}
+      <div v-if="selectedIndex(index)">
+        <div class="dropdown" v-for="(elt, eltIndex) in entry.subMenus" :key="eltIndex">
+          {{elt.name}}
+        </div>
       </div>
+    </div>
+
 
       <!-- <router-link to="/livres" class="livre">Livres</router-link>
       <router-link to="" class="empty" />
@@ -30,7 +34,7 @@
         </template>
         <b-dropdown-item><img src="../assets/img/drapeau-anglais.jpg" class="drapeau" /></b-dropdown-item>
       </b-dropdown> -->
-    </div>
+    <!-- </div> -->
     <hr>
 
   </div>
@@ -41,7 +45,7 @@
 export default {
   data(){
     return{
-      showItems: false,
+      currentIndex: null,
       data:[
         {name: "Ajouter", subMenus: 
           [
@@ -50,21 +54,24 @@ export default {
             {name: 'juju'}
           ]
         },
-        {name: 'Livres'},
-        {name: 'Justine', subMenus:
-          [
-            { name: "coucou"}
-          ]
-        },
+        {name: 'Livres'}
       ]
     }
   },
   methods:{
-    openDropDown(index){
-      if(this.data[index].subMenus){
-        this.showItems = !this.showItems;
+    selectedIndex(index){
+      if(index === this.currentIndex){
+        return true;
       }
-    } 
+      return false;
+    } ,
+    clickHandle(index){
+      if(this.currentIndex === index){
+        this.currentIndex = null;
+      } else{
+      this.currentIndex = index;
+      }
+    }
   }
 }
 </script>
