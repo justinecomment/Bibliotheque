@@ -6,7 +6,7 @@
     <router-link to="/" class="title">Bibliotheque</router-link>
     <p>Blablabla</p>
 
-    <router-view></router-view>
+    <router-view class="allContent"></router-view>
   </div>
 </template>
 
@@ -20,18 +20,20 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   body{
     margin: 0;
     padding: 0;
     font-family: Calibri , Arial;
-    background-color: #eef0f5;
+    
   }
 
   #app{
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #eef0f5;
+    height: 100vh;
   }
 
   a{
@@ -62,7 +64,19 @@ export default {
     box-sizing: border-box;
   }
 
-  @media screen and (max-width: 250px) {
+  @media screen and (max-width: 600px) {
+    .title, p{
+     color: black;
+     position: initial;
+     margin-top: 20px;
+    }
+    .allContent{
+      position: initial;
+      margin-top: 50px;
+    }
+  }
+
+   @media screen and (max-width: 250px) {
     img{
       width: 100%;
     }

@@ -56,6 +56,7 @@
     max-width: 500px;
     min-height: 300px;
     width: 100%;
+    margin-top: -25px;
   }
 
   section{
