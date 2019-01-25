@@ -1,42 +1,24 @@
 <template>
   <div id="Nav-item">
 
-    <div @click="clickHandle(index)" class="item" v-for="(entry, index) in data" :key="index">
-      {{entry.name}}
-      <div v-if="selectedIndex(index)">
-        <div class="dropdown" v-for="(elt, eltIndex) in entry.subMenus" :key="eltIndex">
-          {{elt.name}}
+    <div v-for="(entry, index) in data" 
+        @click="clickHandle(index)" 
+        :key="index"
+        :class="{ navItem : entry.name !== 'Connexion' && entry.name !== '' && entry.name !== '' && entry.name !== 'empty', empty: entry.name === 'empty' }">
+      <div class="item">
+        <i :class="entry.iconBefore"></i>
+        <router-link :class="{connexion : entry.name === 'Connexion'}" :to="entry.to" v-if="entry.name !== 'empty'">{{entry.name}}</router-link>
+        <img v-if="entry.image" class="imageNav" :src="require( `../assets/img/${entry.image}.jpg`)"/>
+        <i :class="entry.iconAfter"></i>
+      </div>
+
+      <div v-if="selectedIndex(index) && entry.subMenus.length" class="dropdown-item">
+        <div v-for="(elt, eltIndex) in entry.subMenus" :key="eltIndex">
+          <router-link :to="elt.to">{{elt.name}}</router-link>
+          <img v-if="elt.image" class="imageNav" :src="require( `../assets/img/${elt.image}.jpg`)"/>
         </div>
       </div>
     </div>
-
-
-      <!-- <router-link to="/livres" class="livre">Livres</router-link>
-      <router-link to="" class="empty" />
-
-      <div>
-        <b-dropdown variant="link text-white" class="item">
-            <template slot="button-content">
-            <span class="fas fa-user"></span>
-          </template>
-          <b-dropdown-item><router-link to="/dashboard">Dashboard</router-link></b-dropdown-item>
-          <b-dropdown-item>Mes livres</b-dropdown-item>
-          <b-dropdown-item>Mes collections</b-dropdown-item>
-          <b-dropdown-item>Mes amis</b-dropdown-item>
-        </b-dropdown>
-      </div>
-      
-      <router-link to="/connexion" class="connexion">Connexion</router-link>
-
-      <b-dropdown variant="link text-white" class="item">
-          <template slot="button-content">
-          <span ><img src="../assets/img/drapeau-francais.jpg" class="drapeau" /></span>
-        </template>
-        <b-dropdown-item><img src="../assets/img/drapeau-anglais.jpg" class="drapeau" /></b-dropdown-item>
-      </b-dropdown> -->
-    <!-- </div> -->
-    <hr>
-
   </div>
 </template>
 
@@ -47,14 +29,60 @@ export default {
     return{
       currentIndex: null,
       data:[
-        {name: "Ajouter", subMenus: 
-          [
-            {name: 'Livre'},
-            {name: 'salut'},
-            {name: 'juju'}
+        { name: "Ajouter",
+          to: '',
+          image: '', 
+          iconBefore: "fa fa-plus", 
+          iconAfter: "fa fa-caret-down", 
+          subMenus: [
+            {name: 'Livre', image: '', to: ''},
+            {name: 'Auteur', image: '', to: ''},
+            {name: 'Collection', image: '', to: ''},
+            {name: 'Amis', image: '', to: ''}
           ]
         },
-        {name: 'Livres'}
+        { name: "Livres", 
+          to: "/livres",
+          image: '',
+          iconBefore: "", 
+          iconAfter: "", 
+          subMenus: []
+        },
+        { name: "empty", 
+          to: "",
+          image: '',
+          iconBefore: "", 
+          iconAfter: "", 
+          subMenus: []
+        },
+        { name: "", 
+          to: "",
+          image: '',
+          iconBefore: "fas fa-user", 
+          iconAfter: "fa fa-caret-down", 
+          subMenus: [
+            {name: 'Dashboard', image: '', to: '/Dashboard'},
+            {name: 'Mes livres', image: '', to: ''},
+            {name: 'Mes Collections', image: '', to: ''},
+            {name: 'Mes Amis', image: '', to: ''}
+          ]
+        },
+        { name: "Connexion", 
+          to: "/connexion",
+          image: '',
+          iconBefore: "", 
+          iconAfter: "", 
+          subMenus: []
+        },
+        { name: "", 
+          to: "",
+          image: "drapeau-francais",
+          iconBefore: "", 
+          iconAfter: "fa fa-caret-down", 
+          subMenus: [
+            {name: '', image: 'drapeau-anglais', to: ''}
+          ]
+        },
       ]
     }
   },
@@ -64,94 +92,97 @@ export default {
         return true;
       }
       return false;
-    } ,
+    },
     clickHandle(index){
       if(this.currentIndex === index){
         this.currentIndex = null;
       } else{
-      this.currentIndex = index;
+        this.currentIndex = index;
       }
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+
+  $colorNav : #fff;
+  $colorNavHover : #7792df;
+  $colorDropdownHover: #fadad6;
+
   #Nav-item{
     display: flex;
+    align-items: center;
+  }
+
+  .navItem{
+    display: flex;
+    flex-direction: row;
+  }
+
+  .navItem:hover{
+    background-color: $colorNavHover;
   }
 
   .item{
     display: flex;
-    flex-direction: row;
-    margin: 0px 10px;
-    width: 50px;
+    padding: 10px;
+    cursor: pointer;
   }
 
-  .dropdown{
+  .dropdown-item{
     display: flex;
     flex-direction: column;
-    background-color:lightgrey;
-    padding: 10px;
     position: absolute;
     top: 40px;
+    z-index:1;
+    width: 20%;
+    background-color: #eef0f5;
+  }
+
+  .dropdown-item > div{
+    padding: 10px;
+  }
+
+  .dropdown-item a{
+    color: #5d5d5d;
+    padding: 8px;
+  }
+
+  .dropdown-item a:hover{
+    color: #cd8d88;
   }
 
   a{
     cursor: pointer;
+    color: $colorNav;
   }
 
-  /* .dropdown-item{
-    color: #898989;
+  a:hover{
+    text-decoration: none;
   }
 
-  .dropdown-item:hover{
-    background-color: #fadad6;
+  i{
+    margin: 0px 8px;
+    color: $colorNav;
   }
 
-  section >a{
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    color: #fff;
-  }
-
-  .livre{
-    padding: 0px 18px;
-  }
-
-  .item:hover, .livre:hover{
-    background-color: #7792df;
-  } 
-
-  .drapeau{
-    width: 20px;
+  .imageNav{
+    width: 24px;
+    height: 17px;
   }
 
   .connexion{
     background-color: #37cce5;
-    border-radius: 26px;
-    padding: 3px 12px;
-    color: #fff;
+    padding: 10px;
   }
 
-  .user{
-    color: #37cce5;
+  .connexion:hover{
+    background-color: #16bbd7;
   }
 
   .empty{
     flex: 1;
-  } */
-
-  hr{
-    /* border: 0.5px solid #fff;
-    width: 100%; */
   }
-
-  @media screen and (max-width: 600px) {
-
-  }
-
-
 </style>
 

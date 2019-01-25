@@ -8,6 +8,8 @@
 
     <button @click="openBurger = false" v-if="burgerIcon">Burger</button>
     <app-nav-item v-if="menuIsOpen"></app-nav-item>
+    <hr>
+
   </div>
 </template>
 
@@ -46,6 +48,7 @@ export default {
 <style scoped>
   #Navigation{
     display: flex;
+    flex-direction: column;
   }
 
   span{
@@ -61,6 +64,12 @@ export default {
     position: absolute;
     padding: 0;
   }
+
+  hr{
+    border: 0.5px solid #fff;
+    width: 100%;
+  }
+
 
 </style>
 
