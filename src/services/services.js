@@ -1,5 +1,3 @@
-import Vue from 'vue';
-
 export default {
   isMobile(){
     if(window.innerWidth <= 600){

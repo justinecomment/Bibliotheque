@@ -15,6 +15,8 @@
 
 <script>
 import NavItem from './Navigation-item';
+import services from '../services/services';
+
 
 export default {
   data(){
@@ -28,12 +30,12 @@ export default {
     appNavItem: NavItem
   },
   created(){
-    window.addEventListener('resize', this.handleResize);
-    this.handleResize();
+    window.addEventListener('resize', this.isMobile);
+    this.isMobile();
   },
   methods:{
-    handleResize(){
-      if(window.innerWidth <= 600){
+    isMobile(){
+      if(services.isMobile()){
         this.burgerIcon = true;
         this.menuIsOpen = false;
       } else{

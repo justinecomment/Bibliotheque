@@ -43,28 +43,30 @@ export default {
     }
   },
   created(){
-    window.addEventListener('resize', services.isMobile);
-    if(services.isMobile){
-      this.mobile = true;
-    } else {
-      this.mobile = false;
-    }
+    window.addEventListener('resize', this.isMobile);
+    this.isMobile();
   },
   methods:{
     selectedIndex(index){
       if(index === this.currentIndex){
         return true;
       }
-      return false;
+      return false;   
     },
     clickHandle(index){
       if(this.currentIndex === index){
         this.currentIndex = null;
-
       } else{
         this.currentIndex = index;
       }
     },
+    isMobile(){
+      if(services.isMobile()){
+        this.mobile = true;
+      } else {
+        this.mobile = false;
+      }
+    }
   }
 }
 </script>
