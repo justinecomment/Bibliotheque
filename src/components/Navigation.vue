@@ -1,14 +1,14 @@
 <template>
   <div id="Navigation">
-    
-    <div class="burgerNav" v-if="!openBurger">
-      <app-nav-item></app-nav-item>
-      <button @click="openBurger = true">close</button>
-    </div>
 
-    <button @click="openBurger = false" v-if="burgerIcon">Burger</button>
+    <i class="fas fa-bars" @click="openNav = false" v-if="burgerIcon"></i>
     <app-nav-item v-if="menuIsOpen"></app-nav-item>
     <hr>
+
+    <div class="burgerNav" v-if="!openNav && burgerIcon">
+      <i @click="openNav = true" class="fas fa-times"></i>
+      <app-nav-item v-if="!menuIsOpen"></app-nav-item>
+    </div>
 
   </div>
 </template>
@@ -21,7 +21,7 @@ export default {
     return{
       burgerIcon: true,
       menuIsOpen: false,
-      openBurger: true
+      openNav: true
     }
   },
   components:{
@@ -51,26 +51,24 @@ export default {
     flex-direction: column;
   }
 
-  span{
+  span, i{
     cursor: pointer;
   }
 
   .burgerNav{
-    background-color: red;
+    background-color: #7e49b5;
     width: 100%;
-    height: 100px;
     margin-left: -50px;
     margin-top: -9px;
     position: absolute;
     padding: 0;
+    z-index: 2;
   }
 
   hr{
     border: 0.5px solid #fff;
     width: 100%;
   }
-
-
 </style>
 
 

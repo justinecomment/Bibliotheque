@@ -4,20 +4,26 @@
     <div v-for="(entry, index) in NavigationItem" 
         @click="clickHandle(index)" 
         :key="index"
-        :class="{ navItem : entry.name !== 'Connexion' && entry.name !== '' && entry.name !== '' && entry.name !== 'empty', empty: entry.name === 'empty' }">
+        :class="{ navItem : entry.name !== 'Connexion' && entry.name !== '' && entry.name !== 'empty' && !mobile, 
+                  empty: entry.name === 'empty',
+                   }">
       <div class="item">
         <i :class="entry.iconBefore"></i>
-        <router-link :class="{connexion : entry.name === 'Connexion'}" :to="entry.to" v-if="entry.name !== 'empty'">{{entry.name}}</router-link>
+        <router-link 
+          :class="{connexion : entry.name === 'Connexion'}" 
+          :to="entry.to" 
+          v-if="entry.name !== 'empty'">{{entry.name}}</router-link>
         <img v-if="entry.image" class="imageNav" :src="require( `../assets/img/${entry.image}.jpg`)"/>
         <i :class="entry.iconAfter"></i>
       </div>
 
-      <div v-if="selectedIndex(index) && entry.subMenus.length" class="dropdown-item">
-        <div v-for="(elt, eltIndex) in entry.subMenus" :key="eltIndex">
-          <router-link :to="elt.to">{{elt.name}}</router-link>
-          <img v-if="elt.image" class="imageNav" :src="require( `../assets/img/${elt.image}.jpg`)"/>
+        <div v-if="selectedIndex(index) && entry.subMenus.length" :class="{'dropdown-item': !mobile, 'dropdown-mobile': mobile}">
+          <div v-for="(elt, eltIndex) in entry.subMenus" :key="eltIndex">
+            <router-link :to="elt.to">{{elt.name}}</router-link>
+            <img v-if="elt.image" class="imageNav" :src="require( `../assets/img/${elt.image}.jpg`)"/>
+          </div>
         </div>
-      </div>
+
     </div>
     
   </div>
@@ -26,12 +32,22 @@
 
 <script>
 import NavigationItem from '../data/Navigation-item';
+import services from '../services/services';
 
 export default {
   data(){
     return{
       currentIndex: null,
-      NavigationItem: NavigationItem
+      NavigationItem: NavigationItem,
+      mobile : false
+    }
+  },
+  created(){
+    window.addEventListener('resize', services.isMobile);
+    if(services.isMobile){
+      this.mobile = true;
+    } else {
+      this.mobile = false;
     }
   },
   methods:{
@@ -44,10 +60,11 @@ export default {
     clickHandle(index){
       if(this.currentIndex === index){
         this.currentIndex = null;
+
       } else{
         this.currentIndex = index;
       }
-    }
+    },
   }
 }
 </script>
@@ -86,6 +103,12 @@ export default {
     z-index:1;
     width: 20%;
     background-color: #eef0f5;
+  }
+
+  .dropdown-mobile{
+    text-align: center;
+    margin-bottom:20px;
+    font-size: 11px;
   }
 
   .dropdown-item > div{
@@ -132,5 +155,13 @@ export default {
   .empty{
     flex: 1;
   }
+
+
+  @media screen and(max-width: 600px){
+    #Nav-item{
+      flex-direction: column;
+    }
+  }
+
 </style>
 
