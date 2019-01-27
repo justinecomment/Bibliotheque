@@ -6,10 +6,10 @@ export default
     iconBefore: "fa fa-plus", 
     iconAfter: "fa fa-caret-down", 
     subMenus: [
-      {name: 'Livre', image: '', to: '/add'},
-      {name: 'Auteur', image: '', to: '/add'},
-      {name: 'Collection', image: '', to: '/add'},
-      {name: 'Amis', image: '', to: '/add'}
+      {name: 'Livre', image: '', to: '/book/add'},
+      {name: 'Auteur', image: '', to: '/author/add'},
+      {name: 'Collection', image: '', to: '/collection/add'},
+      {name: 'Amis', image: '', to: '/friend/add'}
     ]
   },
   { name: "Livres", 

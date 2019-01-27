@@ -1,9 +1,9 @@
 <template>
   <div id="AddForm">
     <section>
-      <h6>Ajouter un livre</h6>
+      <h6>{{title}}</h6>
 
-      <md-field md-clearable v-for="(entry, index) in book" :key="index">
+      <md-field md-clearable v-for="(entry, index) in entity" :key="index">
         <label>{{entry.name}}</label>
         <md-input v-model="entry.value"></md-input>
       </md-field>
@@ -15,28 +15,28 @@
 </template>
 
 <script>
+import Book from './Book.vue';
+
 export default {
+  components:{
+    appBook: Book
+  },
+  props:[
+    'myEntity', 'myTitle'
+  ],
   data(){
     return{
-      selectedComponent: '',
-      book: [
-        { name: 'Format', value: null},
-        { name: 'Auteur', value: null},
-        { name: 'Résumé', value: null},
-        { name: 'Style', value: null},
-        { name: 'Couverture', value: null}
-      ]
+      title: null,
+      entity: null
     }
+  },
+  created(){
+    this.title = this.myTitle;
+    this.entity = this.myEntity;
   },
   methods:{
     submitHandle(){
-      
-    }
-  },
-  mounted(){
-    const route = this.$route.path;
-    if(route === '/add/book'){
-      this.selectedComponent = 'book';
+
     }
   }
 }
