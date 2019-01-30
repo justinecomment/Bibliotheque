@@ -16,12 +16,13 @@ export default {
     axios.post("http://192.168.1.13:8888/login", form)
       .then(response => {
         result = response;
-        console.log(result);
+        console.log(result.headers.authorization);
+        
         return result;
       })
       .catch(error=> {
         result = error.response;
-        console.log(result)
+        console.log(error)
         return result;
       })
   }
