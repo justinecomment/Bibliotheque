@@ -12,10 +12,9 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import 'vue-material/dist/vue-material.min.css'
 
-Vue.use(VueRouter);
 Vue.use(BootstrapVue);
-Vue.use(VueMaterial);
 Vue.use(VueResource);
+Vue.use(VueMaterial);
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -27,5 +26,6 @@ new Vue({
   el: '#app',
   router,
   store,
+  Vuex,
   render: h => h(App)
 })

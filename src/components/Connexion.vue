@@ -1,9 +1,9 @@
 <template>
   <div id="Connexion">
-    <section>
+    <form @submit.prevent="checkForm" >
       <div class="menu-btn">
-        <button @click="connexionHandle('connexion')">Connexion</button>
-        <button @click="connexionHandle('creer')">Créer un compte</button>
+        <button @click="btnSelected('connexion')">Connexion</button>
+        <button @click="btnSelected('creer')">Créer un compte</button>
       </div>
       <md-field md-clearable>
         <label>Pseudo</label>
@@ -19,26 +19,38 @@
         <md-input v-model="formData.confirmPassword"></md-input>
       </md-field>
 
-      <button class="btn-connection">Se connecter</button>
-    </section>
+      <button class="btn-connection" type="submit">Se connecter</button>
+      <p v-if="errors.length">{{errors}}</p>
+    </form>
   </div>
 </template>
 
 <script>
+import Services from "../services/services";
+
   export default {
     data(){
       return{
+        errors: [],
         formData:{
           pseudo: null,
           password: null,
-          confirmPassword: null
+          confirmPassword: null,
         },
         btnSelect: ''
       }
     },
     methods:{
-      connexionHandle(e){
-        this.btnSelect = e;
+      btnSelected(btn){
+        this.btnSelect = btn;
+      },
+      checkForm(e){
+        if (this.formData.pseudo && this.formData.password && !this.formData.confirmPassword){
+          // console.log(this.formData.pseudo + ', ' + this.formData.password)
+          Services.login(this.formData);
+        } else{
+          this.errors.push('error')
+        }
       }
     }
   }
@@ -59,7 +71,7 @@
     margin-top: -25px;
   }
 
-  section{
+  form{
     margin: 0 auto;
     width: 70%;
   }
