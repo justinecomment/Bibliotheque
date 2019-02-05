@@ -22,6 +22,8 @@ const mutations = {
   'AUTH_SUCCESS'(state, data){
     state.token = data.token
     state.user = data.user;
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', data.user);
   },
   'LOG_OUT'(state){
     state.token = ''
@@ -41,28 +43,32 @@ const actions = {
     }, 100000)
   },
   signin ({commit, dispatch}, formData) {
-    axios.post("http://192.168.1.13:8888/login", formData)
+    return new Promise((resolve, reject) => {
+      axios.post("http://192.168.1.13:8888/login", formData)
+        .then( response => {
+          const token = response.data;
+          const user = formData.username;
+          commit('AUTH_SUCCESS', {token: token, user: user})
+          dispatch('setLogoutTimer');
+          route.replace('/');
+        })
+        .catch( error => {
+          if(error.response.status === 403){
+            reject();
+          }
+        });
+    });
+  },
+  signup ({commit, dispatch}, formData) {
+    axios.post("http://192.168.1.13:8888/users/sign-up", formData)
       .then((response) => {
         const token = response.data;
         const user = formData.username;
-        localStorage.setItem('token', token);
-        localStorage.setItem('user', user);
-        commit('AUTH_SUCCESS', {token: token, user: user})
-        route.replace('/');
+        commit('AUTH_SUCCESS', {token: token, user: user});
         dispatch('setLogoutTimer');
+        route.replace('/');
       })
       .catch(error => console.log(error));
-  },
-  signup ({commit}, formData) {
-    axios.post("http://192.168.1.13:8888/sign-up", formData)
-      .then((response) => {
-        const token = response.data;
-        const user = formData.username;
-        commit('AUTH_SUCCESS', token, user)
-      })
-      .catch( () => {
-        commit('AUTH_ERROR');
-      });
   },
   logout ({commit}) {
     commit('CLEAR_AUTH');

@@ -1,26 +1,49 @@
 <template>
   <div id="Login">
-    <form @submit.prevent="login" >
+    <form @submit.prevent="registerOrLogin(btnSelect)">
+      
       <div class="menu-btn">
-        <button @click="btnSelected('connexion')">Connexion</button>
-        <button @click="btnSelected('creer')">Créer un compte</button>
+        <button 
+          @click="btnSelect = 'signin'" 
+          :class="{'highlighted': btnSelect === 'signin' }">Connexion</button>
+        <button
+          @click="btnSelect = 'signup'" 
+          :class="{'highlighted': btnSelect === 'signup' }">Créer un compte</button>
       </div>
-      <md-field md-clearable>
+
+      <md-field 
+        md-clearable 
+        :class="{'md-invalid' : !usernameValid }">
         <label>username</label>
-        <md-input v-model="formData.username"></md-input>
+        <md-input 
+          v-model="user.username"></md-input>
+        <span class="md-error errors" v-if="!user.username">Username requis</span>
       </md-field>
-      <md-field md-clearable>
+
+      <md-field 
+        md-clearable 
+        :class="{'md-invalid' : !passwordValid}">
         <label>Mot de Passe</label>
-        <md-input v-model="formData.password"></md-input>
+        <md-input 
+          v-model="user.password" 
+          type="password"></md-input>
+        <span class="md-error errors" v-if="!user.password">Mot de passe requis</span>
       </md-field>
 
-      <md-field md-clearable v-show="btnSelect ==='creer'">
+      <md-field 
+        md-clearable 
+        v-show="btnSelect ==='signup'" 
+        :class="{'md-invalid' : !confirmPasswordValid}">
         <label>Confirmer le Mot de Passe</label>
-        <md-input v-model="formData.confirmPassword"></md-input>
+        <md-input
+          v-model="confirmPassword" 
+          type="password"></md-input>
+        <span class="md-error errors">Confirmation du Mot de passe requis</span>
       </md-field>
 
-      <button class="btn-connection" type="submit">Se connecter</button>
-      <p v-if="errors.length">{{errors}}</p>
+      <button type="submit" class="btn-connection">Se connecter</button>
+      <p style="marginTop: 30px; color: red">{{errors}}</p>
+
     </form>
   </div>
 </template>
@@ -29,28 +52,37 @@
   export default {
     data(){
       return{
-        errors: [],
-        formData:{
-          username: null,
-          password: null,
-          confirmPassword: null,
+        errors: null,
+        usernameValid: true,
+        passwordValid: true,
+        confirmPasswordValid: true,
+        user : {
+          username:'',
+          password:'',
+          confirmPassword: ''
         },
-        btnSelect: ''
+        btnSelect: 'signin'
       }
     },
     methods:{
-      btnSelected(btn){
-        this.btnSelect = btn;
+      registerOrLogin(strategy){
+        if(this.checkForm()){
+          this.$store.dispatch(strategy, {
+          username: this.user.username,
+          password : this.user.password
+        })
+        .catch( (error) => { 
+          this.errors = 'Mauvais user, veuillez rééssayer';
+        })
+      }
       },
-      login(e){
-        if (this.formData.username && this.formData.password && !this.formData.confirmPassword){
-          let username = this.formData.username;
-          let password = this.formData.password;
-          this.$store.dispatch('signin', {username, password} )
-            .catch((error)=>{ console.log(error) })
-        } else{
-          this.errors.push('non rempli')
+      checkForm(){
+        if(!this.user.username || !this.user.password){
+          this.usernameValid = false;
+          this.passwordValid = false;
+          return false;
         }
+        return true;
       }
     }
   }
@@ -74,9 +106,14 @@
   form{
     margin: 0 auto;
     width: 70%;
+    min-height: 320px;
   }
 
-   .md-field:after, .md-field:before{
+  .md-field {
+    margin: 30px 0px;
+  }
+
+  .md-field:after{
     border: 0.5px solid grey;
   }
 
@@ -101,10 +138,6 @@
     align-self: center;
   } 
 
-  .md-field {
-    margin: 0px 0px;
-  }
-
   button{
     border: none;
     background-color: transparent;
@@ -112,6 +145,15 @@
     color: #9670bd;
     font-weight: 900;
     font-size: 20px;
+  }
+
+  .errors{
+    color: red;
+    margin-top: 20px;
+  }
+
+  .highlighted{
+    border-bottom: 2px solid #9670bd;
   }
 
 </style>

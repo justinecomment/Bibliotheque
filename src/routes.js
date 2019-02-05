@@ -30,6 +30,13 @@ const routes =[
     path: '/books',
     name: 'Books', 
     component: Books,
+    beforeEnter(to, from, next){
+      if(Auth.state.token !== ''){
+        next()
+      } else{
+        next('/login')
+      }
+    }
   },
   {
     path: '/book/add',
