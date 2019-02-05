@@ -1,24 +1,39 @@
 <template>
   <div id="Nav-item">
-    <div class="item" @click="clickHandle">
-      <span v-if="!auth">
+    <div class="item">
+      <span v-if="!auth" @click="showDropdownAdd = !showDropdownAdd">
         <i class="fa fa-plus"></i>
         <router-link to="">Ajouter</router-link>
         <i class="fa fa-caret-down"></i>
+        <div class="dropdownContent" v-if="!auth && showDropdownAdd" >
+          <router-link :to="{name: 'AddBook'}"><i class="fas fa-plus"></i>Livre</router-link>
+          <router-link :to="{name: 'AddAuthor'}"><i class="fas fa-plus"></i>Auteur</router-link>
+          <router-link :to="{name: 'AddCollection'}"><i class="fas fa-plus"></i>Collection</router-link>
+          <router-link :to="{name: 'AddFriend'}"><i class="fas fa-plus"></i>Amis</router-link>
+        </div>
       </span>
+      
       <span v-if="!auth">
         <router-link to="/books">Livres</router-link>
       </span>
       <span class="empty">
         <router-link to=""></router-link>
       </span>
-      <span v-if="!auth">
+      <span v-if="!auth" @click="showDropdownUser = !showDropdownUser">
         <router-link to="">
           <i class="fas fa-user"></i>
           <i class="fa fa-caret-down"></i>
         </router-link>
+        <div class="dropdownContent" v-if="!auth && showDropdownUser" >
+          <router-link to="/Dashboard">Dashboard</router-link>
+          <router-link to="">Mes livres</router-link>
+          <router-link to="">Mes Collection</router-link>
+          <router-link to="">Mes Amis</router-link>
+        </div>
       </span>
-        <span class="login">
+
+
+      <span class="login">
         <router-link to="/login">Connexion</router-link>
       </span>
       <span v-if="!auth">
@@ -31,12 +46,6 @@
         <router-link @click.native="logout" to="">Déconexion</router-link>
       </span>
     </div>
-
-    <!-- <div v-if="selectedIndex()" 
-         :class="{'dropdown-item': !mobile, 'dropdown-mobile': mobile}">
-      <router-link :to="elt.to">{{elt.name}}</router-link>
-    </div> -->
-
   </div>
 </template>
 
@@ -47,8 +56,9 @@ import services from '../services/services';
 export default {
   data(){
     return{
-      currentIndex: null,
-      mobile : false
+      mobile : false,
+      showDropdownAdd: false,
+      showDropdownUser: false
     }
   },
   created(){
@@ -61,19 +71,6 @@ export default {
     }
   },
   methods:{    
-    selectedIndex(index){
-      if(index === this.currentIndex){
-        return true;
-      }
-      return false;   
-    },
-    clickHandle(index){
-      if(this.currentIndex === index){
-        this.currentIndex = null;
-      } else{
-        this.currentIndex = index;
-      }
-    },
     isMobile(){
       if(services.isMobile()){
         this.mobile = true;
@@ -82,8 +79,7 @@ export default {
       }
     },
     logout() {
-      this.$store.dispatch('logout')
-        .catch((error)=>{ console.log(error) })
+      this.$store.dispatch('logout').catch((error)=>{ console.log(error) })
     }
   }
 }
@@ -105,6 +101,7 @@ export default {
     flex-direction: row;
     align-items: center;
     padding: 10px;
+    position: relative;
   }
 
   span:hover{
@@ -117,7 +114,7 @@ export default {
 
   .item{
     display: flex;
-    padding: 10px;
+    padding-top: 10px;
     cursor: pointer;
     width: 100%;
   }
@@ -177,6 +174,27 @@ export default {
 
   .login:hover{
     background-color: #16bbd7;
+  }
+
+  .dropdownContent{
+    flex-direction: column;
+    display: flex;
+    background-color: #eef0f5;
+    top: 32px;
+    position: absolute;
+    margin: 13px 5px;
+    padding: 0px 16px;
+    min-width: 154px;
+    min-height: 93px;
+    z-index: 2;
+  }
+
+  .dropdownContent a, .dropdownContent i{
+    color: #898989;
+  }
+
+  .dropdownContent a{
+    margin: 10px 0px;
   }
 
 

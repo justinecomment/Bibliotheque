@@ -28,17 +28,19 @@ const mutations = {
   },
   'CLEAR_AUTH'(state){
     state.token = '',
-    state.user = ''
+    state.user = '';
+    localStorage.clear();
   }
 };
 
 const actions = {
-  setLogoutTimer ({commit}, expirationTime){
+  setLogoutTimer ({commit}){
     setTimeout(() => {
-      commit('CLEAR_AUTH')
-    }, expirationTime * 500)
+      commit('CLEAR_AUTH');
+      route.replace('/login');
+    }, 100000)
   },
-  signin ({commit}, formData) {
+  signin ({commit, dispatch}, formData) {
     axios.post("http://192.168.1.13:8888/login", formData)
       .then((response) => {
         const token = response.data;
@@ -47,7 +49,7 @@ const actions = {
         localStorage.setItem('user', user);
         commit('AUTH_SUCCESS', {token: token, user: user})
         route.replace('/');
-        dispatch('setLogoutTimer', 500);
+        dispatch('setLogoutTimer');
       })
       .catch(error => console.log(error));
   },
@@ -64,13 +66,10 @@ const actions = {
   },
   logout ({commit}) {
     commit('CLEAR_AUTH');
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
     route.replace('/login');
   },
-  tryAutoLogin ({commit}) {
-    const token = localStorage.getItem('token')
-    if (!token) {
+  tryAutoLogin ({commit, dispatch}) {
+    if (!localStorage.getItem('token')) {
       return
     };
     commit('AUTH_SUCCESS', {
@@ -78,9 +77,9 @@ const actions = {
       user: localStorage.getItem('user')
     });
     route.replace('/');
+    dispatch('setLogoutTimer');
   }
 };
-
 
 export default {
   state,
