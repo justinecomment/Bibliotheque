@@ -39,7 +39,7 @@ export default
     ]
   },
   { name: "Connexion", 
-    to: "/connexion",
+    to: "/login",
     image: '',
     iconBefore: "", 
     iconAfter: "", 
@@ -53,5 +53,12 @@ export default
     subMenus: [
       {name: '', image: 'drapeau-anglais', to: ''}
     ]
+  },
+  { name: "deconnecter", 
+    to: "",
+    image: "",
+    iconBefore: "", 
+    iconAfter: "", 
+    subMenus: []
   },
 ]

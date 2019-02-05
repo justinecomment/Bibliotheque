@@ -1,44 +1,53 @@
 <template>
   <div id="Nav-item">
-
-    <div v-for="(entry, index) in NavigationItem" 
-        @click="clickHandle(index)" 
-        :key="index"
-        :class="{ navItem : entry.name !== 'Connexion' && entry.name !== '' && entry.name !== 'empty' && !mobile, 
-                  empty: entry.name === 'empty',
-                   }">
-      <div class="item">
-        <i :class="entry.iconBefore"></i>
-        <router-link 
-          :class="{connexion : entry.name === 'Connexion'}" 
-          :to="entry.to" 
-          v-if="entry.name !== 'empty'">{{entry.name}}</router-link>
-        <img v-if="entry.image" class="imageNav" :src="require( `../assets/img/${entry.image}.jpg`)"/>
-        <i :class="entry.iconAfter"></i>
-      </div>
-
-        <div v-if="selectedIndex(index) && entry.subMenus.length" :class="{'dropdown-item': !mobile, 'dropdown-mobile': mobile}">
-          <div v-for="(elt, eltIndex) in entry.subMenus" :key="eltIndex">
-            <router-link :to="elt.to">{{elt.name}}</router-link>
-            <img v-if="elt.image" class="imageNav" :src="require( `../assets/img/${elt.image}.jpg`)"/>
-          </div>
-        </div>
-
+    <div class="item" @click="clickHandle">
+      <span v-if="!auth">
+        <i class="fa fa-plus"></i>
+        <router-link to="">Ajouter</router-link>
+        <i class="fa fa-caret-down"></i>
+      </span>
+      <span v-if="!auth">
+        <router-link to="/books">Livres</router-link>
+      </span>
+      <span class="empty">
+        <router-link to=""></router-link>
+      </span>
+      <span v-if="!auth">
+        <router-link to="">
+          <i class="fas fa-user"></i>
+          <i class="fa fa-caret-down"></i>
+        </router-link>
+      </span>
+        <span class="login">
+        <router-link to="/login">Connexion</router-link>
+      </span>
+      <span v-if="!auth">
+        <router-link to="">
+          <img src="../assets/img/drapeau-francais.jpg" class="imageNav" />
+          <i class="fa fa-caret-down"></i>
+        </router-link>
+      </span>
+      <span v-if="!auth">
+        <router-link @click.native="logout" to="">Déconexion</router-link>
+      </span>
     </div>
-    
+
+    <!-- <div v-if="selectedIndex()" 
+         :class="{'dropdown-item': !mobile, 'dropdown-mobile': mobile}">
+      <router-link :to="elt.to">{{elt.name}}</router-link>
+    </div> -->
+
   </div>
 </template>
 
 
 <script>
-import NavigationItem from '../data/Navigation-item';
 import services from '../services/services';
 
 export default {
   data(){
     return{
       currentIndex: null,
-      NavigationItem: NavigationItem,
       mobile : false
     }
   },
@@ -46,7 +55,12 @@ export default {
     window.addEventListener('resize', this.isMobile);
     this.isMobile();
   },
-  methods:{
+  computed:{
+    auth(){
+      return this.$store.getters.isAuthenticated;
+    }
+  },
+  methods:{    
     selectedIndex(index){
       if(index === this.currentIndex){
         return true;
@@ -66,6 +80,10 @@ export default {
       } else {
         this.mobile = false;
       }
+    },
+    logout() {
+      this.$store.dispatch('logout')
+        .catch((error)=>{ console.log(error) })
     }
   }
 }
@@ -82,19 +100,26 @@ export default {
     align-items: center;
   }
 
-  .navItem{
+  span{
     display: flex;
     flex-direction: row;
+    align-items: center;
+    padding: 10px;
   }
 
-  .navItem:hover{
+  span:hover{
     background-color: $colorNavHover;
+  }
+
+  .empty{
+    flex: 1;
   }
 
   .item{
     display: flex;
     padding: 10px;
     cursor: pointer;
+    width: 100%;
   }
 
   .dropdown-item{
@@ -145,17 +170,13 @@ export default {
     height: 17px;
   }
 
-  .connexion{
+  .login{
     background-color: #37cce5;
     padding: 10px;
   }
 
-  .connexion:hover{
+  .login:hover{
     background-color: #16bbd7;
-  }
-
-  .empty{
-    flex: 1;
   }
 
 

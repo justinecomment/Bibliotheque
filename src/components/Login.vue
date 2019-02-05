@@ -1,13 +1,13 @@
 <template>
-  <div id="Connexion">
-    <form @submit.prevent="checkForm" >
+  <div id="Login">
+    <form @submit.prevent="login" >
       <div class="menu-btn">
         <button @click="btnSelected('connexion')">Connexion</button>
         <button @click="btnSelected('creer')">Créer un compte</button>
       </div>
       <md-field md-clearable>
-        <label>Pseudo</label>
-        <md-input v-model="formData.pseudo"></md-input>
+        <label>username</label>
+        <md-input v-model="formData.username"></md-input>
       </md-field>
       <md-field md-clearable>
         <label>Mot de Passe</label>
@@ -26,14 +26,12 @@
 </template>
 
 <script>
-import Services from "../services/services";
-
   export default {
     data(){
       return{
         errors: [],
         formData:{
-          pseudo: null,
+          username: null,
           password: null,
           confirmPassword: null,
         },
@@ -44,12 +42,14 @@ import Services from "../services/services";
       btnSelected(btn){
         this.btnSelect = btn;
       },
-      checkForm(e){
-        if (this.formData.pseudo && this.formData.password && !this.formData.confirmPassword){
-          // console.log(this.formData.pseudo + ', ' + this.formData.password)
-          Services.login(this.formData);
+      login(e){
+        if (this.formData.username && this.formData.password && !this.formData.confirmPassword){
+          let username = this.formData.username;
+          let password = this.formData.password;
+          this.$store.dispatch('signin', {username, password} )
+            .catch((error)=>{ console.log(error) })
         } else{
-          this.errors.push('error')
+          this.errors.push('non rempli')
         }
       }
     }
@@ -57,7 +57,7 @@ import Services from "../services/services";
 </script>
 
 <style scoped>
-  #Connexion{
+  #Login{
     display: flex;
     flex-direction: column;
     background-color: #fff;

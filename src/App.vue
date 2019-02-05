@@ -5,7 +5,6 @@
     <app-navigation></app-navigation>
     <router-link to="/" class="title">Bibliotheque</router-link>
     <p>Blablabla</p>
-
     <router-view class="allContent"></router-view>
   </div>
 </template>
@@ -16,7 +15,10 @@ import Navigation from './components/Navigation.vue';
 export default {
   components:{
     appNavigation: Navigation
-  }
+  },
+  created () {
+      this.$store.dispatch('tryAutoLogin')
+    }
 }
 </script>
 
