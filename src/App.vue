@@ -17,7 +17,7 @@ export default {
     appNavigation: Navigation
   },
   created () {
-      this.$store.dispatch('tryAutoLogin')
+    this.$store.dispatch('tryAutoLogin');
   }
 }
 </script>
@@ -40,6 +40,7 @@ export default {
 
   a{
     text-decoration: none;
+    color: #fff !important;
   }
 
   .title, p{

@@ -4,9 +4,36 @@
       <i class="fas fa-search"></i>
       <input placeholder="Rechercher un livre" value="" />
     </section>
+
     <section>
-      <b-table hover :items="books" :fields="fields"></b-table>
+      <md-table v-model="books" md-card @md-selected="onSelect">
+        <md-table-toolbar></md-table-toolbar>
+        
+        <md-table-toolbar slot="md-table-alternate-header" slot-scope="{ count }">
+          <div class="md-toolbar-section-start">{{ getAlternateLabel(count) }}</div>
+
+          <div class="md-toolbar-section-end">
+            <md-button>
+              <md-icon>delete</md-icon>
+            </md-button>
+            <router-link :to="{name: 'AddBook'}">
+              <md-button><md-icon>edit</md-icon></md-button>
+            </router-link>
+            <md-button>
+              <md-icon>share</md-icon>
+            </md-button>
+          </div>
+        </md-table-toolbar>
+
+        <md-table-row slot="md-table-row" slot-scope="{ item }"  md-selectable="multiple" md-auto-select>
+          <md-table-cell md-label="Nom" md-sort-by="nom">{{ item.nom }}</md-table-cell>
+          <md-table-cell md-label="Auteur" md-sort-by="auteur">{{ item.auteur }}</md-table-cell>
+          <md-table-cell md-label="Format" md-sort-by="format">{{ item.format }}</md-table-cell>
+          <md-table-cell md-label="Couverture" md-sort-by="couverture">{{ item.couverture }}</md-table-cell>
+        </md-table-row>
+      </md-table>
     </section>
+
   </div>
 </template>
 
@@ -14,28 +41,7 @@
 export default {
   data(){
     return {
-      fields: {
-        nom: {
-          label: 'Nom',
-          sortable: true
-        },
-        couverture: {
-          label: 'Couverture',
-          sortable: false
-        },
-        auteur: {
-          label: 'Auteur',
-          sortable: true
-        },
-        résumé: {
-          label: 'Résumé',
-          sortable: true
-        },
-        format: {
-          label: 'Format',
-          sortable: true
-        }
-      }
+      selected: [],
     }
   },
   created(){
@@ -45,14 +51,24 @@ export default {
     books(){
       return this.$store.getters.books;
     }
+  },
+  methods:{
+    onSelect (items) {
+        this.selected = items
+    },
+    getAlternateLabel (count) {
+      let plural = ''
+      count > 1 ? plural = 's' : plural = '';
+      return `${count} livre${plural} selectionné${plural}`
+    }
   }
 }
+
 </script>
 
 <style lang="scss" scoped>
   #Books{
     background-color: #fff;
-    min-height: 500px;
     min-width: 800px;
     box-shadow: 2px 2px #cdcdcd;
     display: flex;
@@ -83,5 +99,10 @@ export default {
   table{
     color: #848484;
   }
+
+  .md-table + .md-table {
+    margin-top: 16px
+  }
+
 </style>
 

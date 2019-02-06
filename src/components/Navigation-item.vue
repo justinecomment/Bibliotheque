@@ -14,7 +14,7 @@
       </span>
       
       <span v-if="!auth">
-        <router-link to="/books">Livres</router-link>
+        <router-link to="/books" exact>Livres</router-link>
       </span>
       <span class="empty">
         <router-link to=""></router-link>
@@ -153,9 +153,10 @@ export default {
     color: #cd8d88;
   }
 
-  a{
+  span > a{
     cursor: pointer;
-    color: $colorNav;
+    color: $colorNav !important;
+    
   }
 
   a:hover{

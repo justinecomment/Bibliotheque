@@ -37,8 +37,6 @@ const mutations = {
 
 const actions = {
   setLogoutTimer ({commit}){
-
-
     setTimeout(() => {
       commit('CLEAR_AUTH');
       route.replace('/login');
