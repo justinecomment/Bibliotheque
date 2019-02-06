@@ -5,7 +5,7 @@ const state={
 };
 
 const getters = {
-  books: state => {
+  books (state) {
     return state.books;
   }
 };
@@ -13,12 +13,18 @@ const getters = {
 const mutations = {
   'SET_BOOKS'(state, books){
     state.books = books;
+  },
+  'ADD_BOOK' (state, book){
+    state.books.push(book);
   }
 };
 
 const actions = {
   initBooks: ({commit}) => {
     commit('SET_BOOKS', Books);
+  },
+  addBook: ({commit}, book) => {
+    commit('ADD_BOOK', book);
   }
 };
 

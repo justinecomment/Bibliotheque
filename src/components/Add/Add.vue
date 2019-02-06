@@ -36,7 +36,15 @@ export default {
   },
   methods:{
     submitHandle(){
-
+      const book = { 
+        isActive: true, 
+        nom: 'rafik', 
+        couverture: 'bb', 
+        auteur: 'bb', 
+        résumé: 'bb', 
+        format: "bb" 
+      }
+      this.$store.dispatch('addBook',book);
     }
   }
 }

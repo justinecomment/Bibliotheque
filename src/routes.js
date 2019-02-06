@@ -13,50 +13,39 @@ import Auth from './store/modules/authentication';
 
 Vue.use(VueRouter);
 
-const isNotLogged = (to, from, next) => {
-  if(Auth.state.token !== ''){
-    next()
-  } else{
-    next('/login')
-  }
-}
-
-const routes =[
+const router = new VueRouter({
+  mode: 'history',
+  routes: [
   {
     path: '/', 
     name: 'Home',
-    component: Home,
-    beforeEnter: isNotLogged
+    component: Home
   },
   {
     path: '/books',
     name: 'Books', 
-    component: Books,
-    beforeEnter: isNotLogged
+    component: Books
+    
   },
   {
     path: '/book/add',
     name: 'AddBook', 
-    component: AddBook,
-    beforeEnter: isNotLogged
+    component: AddBook
   },
   {
     path: '/author/add', 
     name: 'AddAuthor',
-    component: AddAuthor,
-    beforeEnter: isNotLogged
+    component: AddAuthor
   },
   {
     path: '/collection/add', 
     name: 'AddCollection',
-    component: AddCollection,
-    beforeEnter: isNotLogged
+    component: AddCollection
   },
   {
     path: '/friend/add', 
     name: 'AddFriend',
-    component: AddFriend,
-    beforeEnter: isNotLogged
+    component: AddFriend
   },
   {
     path: '/login', 
@@ -66,14 +55,23 @@ const routes =[
   {
     path: '/dashboard', 
     name: 'Dashboard',
-    component: Dashboard,
-    beforeEnter: isNotLogged
+    component: Dashboard
+  }]
+
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.path !== '/login'){
+    if(Auth.state.token !== ''){
+      next();
+    } else{
+      next('/login');
+    }
+  } else{
+    next();
   }
-];
+});
 
 
 
-export default new VueRouter({
-  mode: 'history', 
-  routes
-})
+export default router;
