@@ -1,7 +1,7 @@
 <template>
   <div id="Dashboard">
     <div class="avatar"></div>
-    <p>{{name}}</p>
+    <p>{{username}}</p>
 
     <div class="allSections">
       <div class="section" v-for="(datas, index) in data" :key="index" >
@@ -16,13 +16,17 @@
 export default {
   data(){
     return{
-      name: 'Justine',
       data:[
         { name: 'Livres lu', number: 3 },
         { name: 'Nombre de collections', number: 1},
         { name: 'Livres conseillés', number: 9 },
         { name: 'Nombre d\'amis', number: 13 }
       ]
+    }
+  },
+  computed:{
+    username(){
+      return this.$store.getters.user;
     }
   }
 }

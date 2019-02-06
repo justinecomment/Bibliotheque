@@ -37,10 +37,12 @@ const mutations = {
 
 const actions = {
   setLogoutTimer ({commit}){
+
+
     setTimeout(() => {
       commit('CLEAR_AUTH');
       route.replace('/login');
-    }, 100000)
+    }, 100000000)
   },
   signin ({commit, dispatch}, formData) {
     return new Promise((resolve, reject) => {
@@ -54,7 +56,7 @@ const actions = {
         })
         .catch( error => {
           if(error.response.status === 403){
-            reject();
+            reject("Utilisateur introuvable, veuillez rééssayer");
           }
         });
     });

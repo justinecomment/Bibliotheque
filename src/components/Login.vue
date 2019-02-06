@@ -36,9 +36,9 @@
         :class="{'md-invalid' : !confirmPasswordValid}">
         <label>Confirmer le Mot de Passe</label>
         <md-input
-          v-model="confirmPassword" 
+          v-model="user.confirmPassword" 
           type="password"></md-input>
-        <span class="md-error errors">Confirmation du Mot de passe requis</span>
+        <span class="md-error errors" v-if="!user.confirmPassword">Confirmation du Mot de passe requis</span>
       </md-field>
 
       <button type="submit" class="btn-connection">Se connecter</button>
@@ -64,6 +64,17 @@
         btnSelect: 'signin'
       }
     },
+    watch:{
+      btnSelect(){
+        this.usernameValid = true;
+        this.passwordValid = true;
+        this.confirmPasswordValid = true;
+        this.user.username = '';
+        this.user.password = '';
+        this.user.confirmPassword = '';
+        this.errors = null;
+      }
+    },
     methods:{
       registerOrLogin(strategy){
         if(this.checkForm()){
@@ -72,17 +83,27 @@
           password : this.user.password
         })
         .catch( (error) => { 
-          this.errors = 'Mauvais user, veuillez rééssayer';
+          this.errors = error;
         })
       }
       },
       checkForm(){
-        if(!this.user.username || !this.user.password){
-          this.usernameValid = false;
-          this.passwordValid = false;
-          return false;
+        if (this.btnSelect === 'signin'){
+          if(!this.user.username || !this.user.password ){
+            this.usernameValid = false;
+            this.passwordValid = false;
+            return false;
+          }
+          return true;
+        } else if (this.btnSelect === 'signup'){
+          if(!this.user.username || !this.user.password || !this.user.confirmPassword){
+            this.usernameValid = false;
+            this.passwordValid = false;
+            this.confirmPasswordValid = false;
+            return false;
+          }
+          return true;
         }
-        return true;
       }
     }
   }

@@ -21,7 +21,7 @@
       </span>
       <span v-if="!auth" @click="showDropdownUser = !showDropdownUser">
         <router-link to="">
-          <i class="fas fa-user"></i>
+          <i class="fas fa-user"></i>{{username}}
           <i class="fa fa-caret-down"></i>
         </router-link>
         <div class="dropdownContent" v-if="!auth && showDropdownUser" >
@@ -32,8 +32,7 @@
         </div>
       </span>
 
-
-      <span class="login">
+      <span class="login" v-if="auth">
         <router-link to="/login">Connexion</router-link>
       </span>
       <span v-if="!auth">
@@ -43,7 +42,9 @@
         </router-link>
       </span>
       <span v-if="!auth">
-        <router-link @click.native="logout" to="">Déconexion</router-link>
+        <router-link @click.native="logout" to="">
+          <i class="fas fa-power-off"></i>
+        </router-link>
       </span>
     </div>
   </div>
@@ -68,6 +69,9 @@ export default {
   computed:{
     auth(){
       return this.$store.getters.isAuthenticated;
+    },
+    username(){
+      return this.$store.getters.user;
     }
   },
   methods:{    
@@ -102,6 +106,7 @@ export default {
     align-items: center;
     padding: 10px;
     position: relative;
+    color: #fff;
   }
 
   span:hover{
