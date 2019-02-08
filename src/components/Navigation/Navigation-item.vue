@@ -1,43 +1,35 @@
 <template>
   <div id="Nav-item">
     <div class="item">
-      <span v-if="!auth" @click="showDropdownAdd = !showDropdownAdd">
-        <i class="fa fa-plus"></i>
-        <router-link to="">Ajouter</router-link>
-        <i class="fa fa-caret-down"></i>
-        <div class="dropdownContent" v-if="!auth && showDropdownAdd" >
-          <router-link :to="{name: 'AddBook'}"><i class="fas fa-plus"></i>Livre</router-link>
-          <router-link :to="{name: 'AddAuthor'}"><i class="fas fa-plus"></i>Auteur</router-link>
-          <router-link :to="{name: 'AddCollection'}"><i class="fas fa-plus"></i>Collection</router-link>
-          <router-link :to="{name: 'AddFriend'}"><i class="fas fa-plus"></i>Amis</router-link>
-        </div>
-      </span>
       
       <span v-if="!auth">
-        <router-link to="/books" exact>Livres</router-link>
+        <router-link :to="{name: 'Books'}">Livres</router-link>
+      </span>
+      <span v-if="!auth">
+        <router-link :to="{name: 'Authors'}">Auteurs</router-link>
       </span>
       <span class="empty">
         <router-link to=""></router-link>
       </span>
-      <span v-if="!auth" @click="showDropdownUser = !showDropdownUser">
+      <span v-if="!auth" @click="OpenDropdown">
         <router-link to="">
           <i class="fas fa-user"></i>{{username}}
           <i class="fa fa-caret-down"></i>
         </router-link>
-        <div class="dropdownContent" v-if="!auth && showDropdownUser" >
-          <router-link to="/Dashboard">Dashboard</router-link>
-          <router-link to="">Mes livres</router-link>
-          <router-link to="">Mes Collection</router-link>
-          <router-link to="">Mes Amis</router-link>
+        <div class="dropdownContent" v-if="!auth && showDropdown" >
+          <router-link :to="{name: 'UserDashboard'}" v-click-outside="closeDropdown">Dashboard</router-link>
+          <router-link :to="{name: 'UserBook'}" v-click-outside="closeDropdown">Mes livres</router-link>
+          <router-link :to="{name: 'UserCollections'}" v-click-outside="closeDropdown">Mes Collections</router-link>
+          <router-link :to="{name: 'UserFriends'}" v-click-outside="closeDropdown">Mes Amis</router-link>
         </div>
       </span>
 
       <span class="login" v-if="auth">
-        <router-link to="/login">Connexion</router-link>
+        <router-link :to="{name: 'Login'}">Connexion</router-link>
       </span>
       <span v-if="!auth">
         <router-link to="">
-          <img src="../assets/img/drapeau-francais.jpg" class="imageNav" />
+          <img src="../../assets/img/drapeau-francais.jpg" class="imageNav" />
           <i class="fa fa-caret-down"></i>
         </router-link>
       </span>
@@ -52,19 +44,19 @@
 
 
 <script>
-import services from '../services/services';
+import services from '../../services/services';
+import ClickOutside from 'vue-click-outside'
 
 export default {
   data(){
     return{
       mobile : false,
-      showDropdownAdd: false,
-      showDropdownUser: false
+      showDropdown: false
     }
   },
   created(){
     window.addEventListener('resize', this.isMobile);
-    this.isMobile();
+    this.isMobile(); 
   },
   computed:{
     auth(){
@@ -84,7 +76,16 @@ export default {
     },
     logout() {
       this.$store.dispatch('logout').catch((error)=>{ console.log(error) })
+    },
+    OpenDropdown(e){
+      this.showDropdown = true;
+    },
+    closeDropdown(){
+      this.showDropdown = false;
     }
+  },
+  directives: {
+    ClickOutside
   }
 }
 </script>

@@ -1,6 +1,20 @@
 <template>
   <div id="Books">
-    <section>
+    <h6>Livres</h6>
+
+    <b-button @click="openModal" variant="link">
+      <i class="fas fa-plus iconAdd" v-b-tooltip.hover title="Ajouter un livre"></i>
+    </b-button>
+    <!-- MODAL -->
+    <b-modal v-model="modalShow" ref="myModalRef" hide-footer>
+      <div class="d-block text-center">
+        <h6>Ajouter un livre</h6>
+      </div>
+      <app-Book-Add v-on:closeModal="hideModal" :modalShow="modalShow"></app-Book-Add>
+    </b-modal>
+    <!-- -->
+    
+    <section class="sectionSearch">
       <i class="fas fa-search"></i>
       <input placeholder="Rechercher un livre" value="" />
     </section>
@@ -16,20 +30,24 @@
             <md-button>
               <md-icon>delete</md-icon>
             </md-button>
-            <router-link :to="{name: 'AddBook'}">
+            <router-link :to="{name: 'BookAdd'}">
               <md-button><md-icon>edit</md-icon></md-button>
             </router-link>
             <md-button>
               <md-icon>share</md-icon>
             </md-button>
+            <md-button>
+              <md-icon>add</md-icon>
+              <md-tooltip md-direction="top">Ajouter à mes livres</md-tooltip>
+            </md-button>
           </div>
         </md-table-toolbar>
 
         <md-table-row slot="md-table-row" slot-scope="{ item }"  md-selectable="multiple" md-auto-select>
-          <md-table-cell md-label="Nom" md-sort-by="nom">{{ item.nom }}</md-table-cell>
-          <md-table-cell md-label="Auteur" md-sort-by="auteur">{{ item.auteur }}</md-table-cell>
+          <md-table-cell md-label="Nom" md-sort-by="nom">{{ item.name }}</md-table-cell>
+          <md-table-cell md-label="Auteur" md-sort-by="auteur">{{ item.author }}</md-table-cell>
           <md-table-cell md-label="Format" md-sort-by="format">{{ item.format }}</md-table-cell>
-          <md-table-cell md-label="Couverture" md-sort-by="couverture">{{ item.couverture }}</md-table-cell>
+          <md-table-cell md-label="Couverture" md-sort-by="couverture">{{ item.resume }}</md-table-cell>
         </md-table-row>
       </md-table>
     </section>
@@ -38,11 +56,17 @@
 </template>
 
 <script>
+import BookAdd from './BookAdd.vue';
+
 export default {
   data(){
     return {
       selected: [],
+      modalShow: false
     }
+  },
+  components:{
+    AppBookAdd: BookAdd
   },
   created(){
     return this.$store.dispatch('initBooks');
@@ -54,12 +78,18 @@ export default {
   },
   methods:{
     onSelect (items) {
-        this.selected = items
+      this.selected = items
     },
     getAlternateLabel (count) {
       let plural = ''
       count > 1 ? plural = 's' : plural = '';
       return `${count} livre${plural} selectionné${plural}`
+    },
+    openModal () {
+      this.modalShow = true;
+    },
+    hideModal () {
+      this.modalShow = false;
     }
   }
 }
@@ -68,16 +98,13 @@ export default {
 
 <style lang="scss" scoped>
   #Books{
-    background-color: #fff;
-    min-width: 800px;
-    box-shadow: 2px 2px #cdcdcd;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
-  section:nth-child(1){
-    background-color: #e6e6e6;
+  .sectionSearch{
+    background-color: #eaeaea;
     color: #bebebe;
     display: flex;
     width: 100%;
@@ -86,7 +113,7 @@ export default {
     padding: 10px 0px;
   }
 
-  section:nth-child(2){
+  section{
     width: 100%;
   }
 
@@ -103,6 +130,19 @@ export default {
   .md-table + .md-table {
     margin-top: 16px
   }
+
+  .iconAdd i, .iconAdd{
+    color: #37cce5 !important;
+    font-weight: bold;
+    font-size: 30px;
+  }
+
+  h6{
+    color: #aa87cb;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
 
 </style>
 

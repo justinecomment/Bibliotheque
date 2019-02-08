@@ -31,11 +31,6 @@ export default {
 </script>
 
 <style scoped>
-  #Home{
-    margin: 20px 20%;
-    text-align: center;
-  }
-
   p, h4{
     color: #848484;
   }
@@ -43,6 +38,7 @@ export default {
   .allRound{
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
   }
 
   .section{

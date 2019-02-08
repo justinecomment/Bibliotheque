@@ -7,6 +7,7 @@ import VueMaterial from 'vue-material';
 import store from './store/store';
 import router from './routes';
 import Vuelidate from 'vuelidate';
+import Toasted from 'vue-toasted';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
@@ -17,6 +18,7 @@ Vue.use(BootstrapVue);
 Vue.use(VueResource);
 Vue.use(VueMaterial);
 Vue.use(Vuelidate);
+Vue.use(Toasted);
 
 new Vue({
   el: '#app',

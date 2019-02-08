@@ -1,19 +1,21 @@
 export default [
   { 
-    isActive: true, 
-    nom: 'b', 
-    couverture: 'b', 
-    auteur: 'b', 
-    résumé: 'b', 
-    format: "b" 
+    name: 'b', 
+    format: 'b', 
+    author: 'b', 
+    resume: 'b'
   },
   { 
-    isActive: false, 
-    nom: 'b', 
-    couverture: 'b', 
-    auteur: 'b', 
-    résumé: 'b', 
-    format: "b"
+    name: 'b', 
+    format: 'b', 
+    author: 'b', 
+    resume: 'b'
   },
+  { 
+    name: 'b', 
+    format: 'b', 
+    author: 'b', 
+    resume: 'b'
+  }
 ];
 

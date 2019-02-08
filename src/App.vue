@@ -1,16 +1,18 @@
 <template>
   <div id="app">
-    <div class="header"></div>
-    <img src="./assets/img/header.jpg" />
-    <app-navigation></app-navigation>
-    <router-link to="/" class="title">Bibliotheque</router-link>
-    <p>Blablabla</p>
-    <router-view class="allContent"></router-view>
+    <div class="header">
+      <app-navigation></app-navigation>
+      <router-link :to="{name: 'Home'}">Bibliotheque</router-link>
+    </div>
+    
+    <div class="allContent">
+      <router-view ></router-view>
+    </div>
   </div>
 </template>
 
 <script>
-import Navigation from './components/Navigation.vue';
+import Navigation from './components/Navigation/Navigation.vue';
 
 export default {
   components:{
@@ -18,71 +20,60 @@ export default {
   },
   created () {
     this.$store.dispatch('tryAutoLogin');
+    this.$store.dispatch('initBooks');
+    this.$store.dispatch('initUserBooks');
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   body{
-    margin: 0;
-    padding: 0;
     font-family: Calibri , Arial;
-    
+    background-image: url(./assets/img/fond.jpg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: #eef0f5;
   }
 
-  #app{
+  .header #Navigation{
+    margin: 0px 40px;
+  }
+
+  .header{
+    position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    background-color: #eef0f5;
-    height: 100vh;
   }
 
-  a{
-    text-decoration: none;
-    color: #fff !important;
-  }
-
-  .title, p{
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    color: white;
-  }
-
-  .title{
+  .header > a{
     top: 100px;
     font-size: 25px;
+    text-decoration: none;
+    color: #fff !important;
+    text-align: center;
   }
 
-  p{
-    top: 140px;
+  .allContent{
+    margin-top: 12%;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 2px 2px 0px #cbcbcb;
+    margin-left: 10%;
+    margin-right: 10%;
+    padding: 20px;
   }
 
-  #Navigation{
-    position: absolute;
-    top: 8px;
-    width: 100%;
-    padding: 0px 50px;
-    box-sizing: border-box;
-  }
-
-  @media screen and (max-width: 600px) {
-    .title, p{
-     color: black;
-     position: initial;
-     margin-top: 20px;
-    }
+  @media only screen and (max-width: 600px) {
     .allContent{
       position: initial;
       margin-top: 50px;
     }
-  }
 
-   @media screen and (max-width: 250px) {
-    img{
-      width: 100%;
+    header{
+      font-size: 3em;
     }
   }
+  
+
 
 </style>

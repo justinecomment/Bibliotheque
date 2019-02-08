@@ -15,7 +15,7 @@
 
 <script>
 import NavItem from './Navigation-item';
-import services from '../services/services';
+import services from '../../services/services';
 
 
 export default {

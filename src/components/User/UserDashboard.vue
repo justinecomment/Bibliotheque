@@ -20,7 +20,9 @@ export default {
         { name: 'Livres lu', number: 3 },
         { name: 'Nombre de collections', number: 1},
         { name: 'Livres conseillés', number: 9 },
-        { name: 'Nombre d\'amis', number: 13 }
+        { name: 'Nombre d\'amis', number: 13 },
+        { name: 'Dernier livre crées', number: 'Nom du livre' },
+        { name: 'Dernier livre ajouté', number: 'Nom du livre' },
       ]
     }
   },
