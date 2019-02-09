@@ -11,14 +11,17 @@ const getters = {
 };
 
 const mutations = {
-  'USER_SET_BOOKS'(state, userBook){
+  'USER_SET_BOOKS'(state, userBook) {
     state.userBooks = userBook;
   },
-  'USER_ADD_BOOK' (state, userBook){
+  'USER_ADD_BOOK' (state, userBook) {
     state.userBooks.push(userBook);
   },
-  'USER_DELETE_BOOK' (state, userBook){
+  'USER_DELETE_BOOK' (state, userBook) {
     state.userBooks.splice(0,1);
+  },
+  'ADD_TO_USERBOOK' (state, userBook) {
+    state.userBooks.push(userBook)
   }
 };
 
@@ -31,6 +34,9 @@ const actions = {
   },
   userDeleteBook: ({commit}, userBook) => {
     commit('USER_DELETE_BOOK', userBook)
+  },
+  addToUserBook: ({commit}, book) => {
+    commit('ADD_TO_USERBOOK', book);
   }
 };
 

@@ -21,7 +21,30 @@ const mutations = {
 };
 
 const actions = {
-  initBooks: ({commit}) => {
+  initBooks: ({commit, rootState, dispatch}) => {
+    dispatch('initAuthors');
+    dispatch('initCategories');
+    const authors = rootState.Authors.authors;
+    const categories = rootState.Categories.categories;
+    let idAuthor;
+    let idBook;
+    let idCategories;
+    
+    for(let entry in Books){
+      idBook = Books[entry].id;
+      for(let elt in authors){
+        idAuthor = authors[elt].id;
+        if(idAuthor ===  idBook){
+          Books[entry].author = authors[elt].name;
+        }
+      }
+      for(let idx in categories){
+        idCategories = categories[idx].id;
+        if(idCategories ===  idBook){
+          Books[entry].category = categories[idx].name;
+        }
+      }
+    }
     commit('SET_BOOKS', Books);
   },
   addBook: ({commit}, book) => {    

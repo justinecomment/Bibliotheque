@@ -22,7 +22,6 @@
     <section>
       <md-table v-model="books" md-card @md-selected="onSelect">
         <md-table-toolbar></md-table-toolbar>
-        
         <md-table-toolbar slot="md-table-alternate-header" slot-scope="{ count }">
           <div class="md-toolbar-section-start">{{ getAlternateLabel(count) }}</div>
 
@@ -30,7 +29,7 @@
             <md-button>
               <md-icon>delete</md-icon>
             </md-button>
-            <router-link :to="{name: 'BookAdd'}">
+            <!-- <router-link to="">
               <md-button><md-icon>edit</md-icon></md-button>
             </router-link>
             <md-button>
@@ -39,15 +38,17 @@
             <md-button>
               <md-icon>add</md-icon>
               <md-tooltip md-direction="top">Ajouter à mes livres</md-tooltip>
-            </md-button>
+            </md-button> -->
           </div>
         </md-table-toolbar>
 
         <md-table-row slot="md-table-row" slot-scope="{ item }"  md-selectable="multiple" md-auto-select>
-          <md-table-cell md-label="Nom" md-sort-by="nom">{{ item.name }}</md-table-cell>
-          <md-table-cell md-label="Auteur" md-sort-by="auteur">{{ item.author }}</md-table-cell>
-          <md-table-cell md-label="Format" md-sort-by="format">{{ item.format }}</md-table-cell>
-          <md-table-cell md-label="Couverture" md-sort-by="couverture">{{ item.resume }}</md-table-cell>
+          <md-table-cell md-label="Nom" md-sort-by="name">{{ item.name }}</md-table-cell>
+          <md-table-cell md-label="Auteur" md-sort-by="author">{{ item.author }}</md-table-cell>
+          <md-table-cell md-label="Cover" md-sort-by="cover">{{ item.cover }}</md-table-cell>
+          <md-table-cell md-label="Résumé" md-sort-by="resume">{{ item.resume }}</md-table-cell>
+          <md-table-cell md-label="categorie" md-sort-by="category">{{ item.category }}</md-table-cell>
+          <md-table-cell md-label="style" md-sort-by="style">{{ item.style }}</md-table-cell>
         </md-table-row>
       </md-table>
     </section>
@@ -68,9 +69,6 @@ export default {
   components:{
     AppBookAdd: BookAdd
   },
-  created(){
-    return this.$store.dispatch('initBooks');
-  },
   computed:{
     books(){
       return this.$store.getters.books;
@@ -78,7 +76,7 @@ export default {
   },
   methods:{
     onSelect (items) {
-      this.selected = items
+      this.selected = items;
     },
     getAlternateLabel (count) {
       let plural = ''
@@ -90,6 +88,9 @@ export default {
     },
     hideModal () {
       this.modalShow = false;
+    },
+    addToUserBook () {
+      // return this.$store.dispatch('addToUserBook', userBook);
     }
   }
 }
@@ -122,11 +123,7 @@ export default {
     background-color: transparent;
     padding-left: 10px;
   }
-
-  table{
-    color: #848484;
-  }
-
+ 
   .md-table + .md-table {
     margin-top: 16px
   }

@@ -20,7 +20,9 @@ export default {
   },
   created () {
     this.$store.dispatch('tryAutoLogin');
+    this.$store.dispatch('initCategories');
     this.$store.dispatch('initBooks');
+    this.$store.dispatch('initAuthors');
     this.$store.dispatch('initUserBooks');
   }
 }

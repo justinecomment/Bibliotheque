@@ -1,19 +1,19 @@
 export default [
   { 
     isActive: true, 
-    name: 'name', 
-    cover: 'cover', 
-    author: 'author', 
-    resume: 'resume', 
-    format: "format" 
+    name: 'user name', 
+    cover: 'user cover', 
+    author: 'user author', 
+    resume: 'user resume', 
+    format: 'user format' 
   },
   { 
     isActive: false, 
-    name: 'name', 
-    cover: 'cover', 
-    author: 'author', 
-    resume: 'resume', 
-    format: "format"
+    name: 'user name', 
+    cover: 'user cover', 
+    author: 'user author', 
+    resume: 'user resume', 
+    format: 'user format'
   },
 ];
 

@@ -1,6 +1,6 @@
 export default [
   { 
-    name: 'Ami 1' 
+    name: 'rafik' 
   },
   { 
     name: 'Ami 2'

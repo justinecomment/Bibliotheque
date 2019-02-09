@@ -43,11 +43,11 @@
         </md-table-toolbar>
 
         <md-table-row slot="md-table-row" slot-scope="{ item }"  md-selectable="multiple" md-auto-select>
-          <md-table-cell md-label="Nom" md-sort-by="nom">{{ item.name }}</md-table-cell>
-          <md-table-cell md-label="Bio" md-sort-by="Bio">{{ item.firstname }}</md-table-cell>
-          <md-table-cell md-label="Bio" md-sort-by="Bio">{{ item.yearOfBirth }}</md-table-cell>
-          <md-table-cell md-label="Bio" md-sort-by="Bio">{{ item.yearOfDeath }}</md-table-cell>
-          <md-table-cell md-label="Bio" md-sort-by="Bio">{{ item.nativeCountry }}</md-table-cell>
+          <md-table-cell md-label="Nom" md-sort-by="name">{{ item.name }}</md-table-cell>
+          <md-table-cell md-label="Prénom" md-sort-by="firstname">{{ item.firstname }}</md-table-cell>
+          <md-table-cell md-label="Année de naissance" md-sort-by="yearOfBirth">{{ item.yearOfBirth }}</md-table-cell>
+          <md-table-cell md-label="Année de décès" md-sort-by="yearOfDeath">{{ item.yearOfDeath }}</md-table-cell>
+          <md-table-cell md-label="Pays d'origine" md-sort-by="nativeCountry">{{ item.nativeCountry }}</md-table-cell>
         </md-table-row>
       </md-table>
     </section>
@@ -67,9 +67,6 @@ export default {
   },
   components:{
     AppAuthorAdd: AuthorAdd
-  },
-  created(){
-    return this.$store.dispatch('initAuthors');
   },
   computed:{
     authors(){
