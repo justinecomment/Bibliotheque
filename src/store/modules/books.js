@@ -51,7 +51,7 @@ const actions = {
     }
     commit('SET_BOOKS', Books);
   },
-  addBook: ({commit}, book) => {    
+  addBook: ({commit}, book) => {  
     commit('ADD_BOOK', book);
   }
 };

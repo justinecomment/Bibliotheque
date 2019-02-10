@@ -1,121 +1,132 @@
 <template>
   <div id="AddForm">
-    <form @submit="submitHandle"> 
-      <div v-for="(data, index) in formData" :key="index" >
+    <form @submit.prevent="submitHandle"> 
 
-        <md-field v-if="data.select" :class="{'md-invalid' : submitted && !data.isValid }">
-          <label>Auteurs</label>
-          <md-select v-model="data.value">
-            <md-option v-for="item in authors" :key="item.id" :value="item.name">{{item.name}}</md-option>
-          </md-select>
-          <span class="md-error errors" v-if="!data.value">champs requis</span>
-        </md-field>
+      <md-field :class="{'md-invalid': $v.name.$error }" class="validators">
+        <label>Nom</label>
+        <md-input 
+          @change="$v.name.$touch()" 
+          :class="{'md-invalid': !$v.name.$invalid }" 
+          v-model="$v.name.$model">Nom</md-input>
+        <span class="md-error errors" v-if="$v.name.$error">champs requis</span>
+      </md-field>
 
+      <md-field :class="{'md-invalid': $v.cover.$error }" class="validators">
+        <label>Cover</label>
+        <md-input 
+          @change="$v.cover.$touch()"
+          :class="{'md-invalid': $v.cover.$invalid }"
+          v-model="$v.cover.$model">Cover</md-input>
+        <span class="md-error errors" v-if="$v.cover.$error">champs requis</span>
+      </md-field>
 
-        <md-field v-else :class="{'md-invalid' : submitted && !data.isValid }">
-          <label>{{data.name}}</label>
-          <md-input v-model="data.value" @change="data.isValid = true"></md-input>
-          <span class="md-error errors" v-if="!data.value">champs requis</span>
-        </md-field>
+      <md-field :class="{'md-invalid': $v.author.$error }" class="validators">
+        <label>Auteurs</label>
+        <md-select v-model="$v.author.$model">
+          <md-option v-for="item in authors" :key="item.id" :value="item.id">{{item.name}}</md-option>
+        </md-select>
+        <span class="md-error errors" v-if="$v.author.$error">champs requis</span>
+      </md-field>
 
-      </div>
+      <md-field :class="{'md-invalid': $v.resume.$error }" class="validators">
+        <label>Résumé</label>
+        <md-input 
+          @change="$v.resume.$touch()"
+          :class="{'md-invalid': $v.resume.$invalid }"
+          v-model="$v.resume.$model">Résumé</md-input>
+        <span class="md-error errors" v-if="$v.resume.$error">champs requis</span>
+      </md-field>
+
+      <md-field :class="{'md-invalid': $v.category.$error }" class="validators">
+        <label>Catégories</label>
+        <md-select v-model="$v.category.$model">
+          <md-option v-for="item in categories" :key="item.id" :value="item.id">{{item.name}}</md-option>
+        </md-select>
+        <span class="md-error errors" v-if="$v.category.$error">champs requis</span>
+      </md-field>
+
+      <md-field :class="{'md-invalid': $v.style.$error }" class="validators">
+        <label>Style</label>
+        <md-select v-model="$v.style.$model">
+          <md-option v-for="item in styles" :key="item.id" :value="item.id">{{item.name}}</md-option>
+        </md-select>
+        <span class="md-error errors" v-if="$v.style.$error">champs requis</span>
+      </md-field>
 
       <button type="submit">Ajouter</button>
+
     </form>
   </div>
 </template>
 
 <script>
+import { required, validations } from 'vuelidate/lib/validators';
+
 export default {
   props:[
     'openModal'
   ],
   data(){
     return{
-      icon : 'check',
-      errors : null,
-      submitted: false,
-      formData:[
-        {
-          name: 'name',
-          value: '',
-          isValid: false,
-          select: false
-        },
-        {
-          name: 'author',
-          value: '',
-          isValid: false,
-          select: true
-        },
-        {
-          name: 'cover',
-          value: '',
-          isValid: false,
-          select: false
-        },
-        {
-          name: 'resume',
-          value: '',
-          isValid: false,
-          select: false
-        },
-        {
-          name: 'category',
-          value: '',
-          isValid: false,
-          select: false
-        },
-        {
-          name: 'style',
-          value: '',
-          isValid: false,
-          select: false
-        }
-      ]
+      name: '', 
+      cover: '', 
+      author: null,  
+      resume: '', 
+      category: null, 
+      style: null
     }
+  },
+  validations: {
+    name: {
+      required
+    },
+    cover: {
+      required
+    },
+    author: {
+      required
+    },
+    resume: {
+      required
+    },
+    category: {
+      required
+    },
+    style: {
+      required
+    },
   },
   computed:{
     authors(){
       return this.$store.getters.authors;
+    },
+    categories(){
+      return this.$store.getters.categories;
+    },
+    styles(){
+      return this.$store.getters.styles;
     }
   },
   watch:{
     openModal(){
-      this.$props.openModal ? this.reset() : null;
+      this.$props.openModal ? this.resetAll() : this.resetAll();
     }
   },
   methods:{
-    reset(){
-      if(!this.formData.select){
-        for (let index in this.formData){
-          this.formData[index].value = '';
-        }
-      }
-    },
     submitHandle(event){
-      event.preventDefault();
-      this.submitted = true;
-      let newBook = {};
-      let onError = 0;
-
-      this.formData.forEach((element) => {
-        if(element.value !== ''){
-          newBook[element.name] = element.value;
-          element.isValid = true;          
-        } else{
-          onError ++;
-        }
-      });
-
-      if(onError === 0){ 
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
         const newBook={
-          id: '5',
-          name: this.formData
+          name: this.name, 
+          cover: this.cover, 
+          author: this.author,  
+          resume: this.resume, 
+          category: this.category, 
+          style: this.style
         }
-              
+        
         this.$store.dispatch('addBook', newBook);
-        // this.$emit("onclosemodal");
+        this.$emit("onclosemodal");
         this.$toasted.show("Livre ajouté avec succès", { 
           theme: "bubble", 
           position: "top-right", 
@@ -123,36 +134,40 @@ export default {
           type: 'success'
         });
       }
+    },
+    resetAll(){
+      this.$v.$reset();
+      this.name = '';
+      this.cover = '';
+      this.author = null;
+      this.resume = '';
+      this.category = null;
+      this.style = null;
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   #AddForm{
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
 
-  .md-field:after, .md-field:before{
-    border: 0.5px solid grey;
-  }
+    button{
+      background-color: #37cce5;
+      padding: 8px 39px;
+      border-radius: 30px;
+      border: none;
+      color: #fff;
+      width: 100%;
+      cursor: pointer;
 
-  button{
-    background-color: #37cce5;
-    padding: 8px 39px;
-    border-radius: 30px;
-    border: none;
-    color: #fff;
-    width: 100%;
-    cursor: pointer;
+      &:hover{
+        background-color: #1fb7d1;
+      }
+    }
   }
-
-  button:hover{
-    background-color: #1fb7d1;
-  }
-
 </style>
 
 

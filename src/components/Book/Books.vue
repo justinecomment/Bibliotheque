@@ -11,7 +11,7 @@
       <div class="d-block text-center">
         <h6>Ajouter un livre</h6>
       </div>
-      <app-Book-Add @onclosemodal="jeferme" :open-modal="openModal"></app-Book-Add>
+      <app-Book-Add @onclosemodal="openModal = false" :open-modal="openModal"></app-Book-Add>
     </b-modal>
     <!-- -->
 
@@ -21,7 +21,7 @@
     </section>
 
     <section>
-      <md-table v-model="books" md-card @md-selected="onSelect">
+      <md-table v-model="books" md-card @md-selected="(items) => selected = items">
         <md-table-toolbar></md-table-toolbar>
         <md-table-toolbar slot="md-table-alternate-header" slot-scope="{ count }">
           <div class="md-toolbar-section-start">{{ getAlternateLabel(count) }}</div>
@@ -66,22 +66,10 @@ export default {
     }
   },
   methods:{
-    onSelect (items) {
-      this.selected = items;
-    },
     getAlternateLabel (count) {
       let plural = ''
       count > 1 ? plural = 's' : plural = '';
       return `${count} livre${plural} selectionné${plural}`
-    },
-    // openModal () {
-    //   this.openModal = true;
-    // },
-    jeferme () {
-      this.openModal = false;
-    },
-    addToUserBook () {
-      // return this.$store.dispatch('addToUserBook', userBook);
     }
   }
 }
@@ -93,44 +81,41 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+      h6{
+        color: #aa87cb;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      .sectionSearch{
+        background-color: #eaeaea;
+        color: #bebebe;
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 0px;
+      }
+
+      section{
+        width: 100%;
+        
+        input{
+          border: none;
+          background-color: transparent;
+          padding-left: 10px;
+        }
+      }
+
+      .iconAdd i, .iconAdd{
+        color: #37cce5 !important;
+        font-weight: bold;
+        font-size: 30px;
+      }
   }
 
-  .sectionSearch{
-    background-color: #eaeaea;
-    color: #bebebe;
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 0px;
-  }
-
-  section{
-    width: 100%;
-  }
-
-  input{
-    border: none;
-    background-color: transparent;
-    padding-left: 10px;
-  }
- 
-  .md-table + .md-table {
-    margin-top: 16px
-  }
-
-  .iconAdd i, .iconAdd{
-    color: #37cce5 !important;
-    font-weight: bold;
-    font-size: 30px;
-  }
-
-  h6{
-    color: #aa87cb;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-
+  
   
 
 

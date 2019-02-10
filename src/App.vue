@@ -23,6 +23,8 @@ export default {
     this.$store.dispatch('initBooks');
     this.$store.dispatch('initAuthors');
     this.$store.dispatch('initUserBooks');
+    this.$store.dispatch('initCategories');
+    this.$store.dispatch('initStyles');
   }
 }
 </script>
