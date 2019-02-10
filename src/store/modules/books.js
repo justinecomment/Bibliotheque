@@ -1,5 +1,4 @@
 import Books from '../../data/Books';
-import route from '../../routes';
 
 const state={
   books:[]
@@ -16,7 +15,7 @@ const mutations = {
     state.books = books;
   },
   'ADD_BOOK' (state, book){
-    state.books.push(book) ;    
+    state.books.push(book) ; 
   }
 };
 
@@ -24,24 +23,29 @@ const actions = {
   initBooks: ({commit, rootState, dispatch}) => {
     dispatch('initAuthors');
     dispatch('initCategories');
+    dispatch('initStyles');
     const authors = rootState.Authors.authors;
     const categories = rootState.Categories.categories;
-    let idAuthor;
-    let idBook;
-    let idCategories;
-    
+    const styles = rootState.Styles.styles;
+
     for(let entry in Books){
-      idBook = Books[entry].id;
+      let idBook = Books[entry].id;
       for(let elt in authors){
-        idAuthor = authors[elt].id;
+        let idAuthor = authors[elt].id;
         if(idAuthor ===  idBook){
           Books[entry].author = authors[elt].name;
         }
       }
       for(let idx in categories){
-        idCategories = categories[idx].id;
+        let idCategories = categories[idx].id;
         if(idCategories ===  idBook){
           Books[entry].category = categories[idx].name;
+        }
+      }
+      for(let index in styles){
+        let idStyles = styles[index].id;
+        if(idStyles ===  idBook){
+          Books[entry].style = styles[index].name;
         }
       }
     }
@@ -49,7 +53,6 @@ const actions = {
   },
   addBook: ({commit}, book) => {    
     commit('ADD_BOOK', book);
-    route.push('/books')
   }
 };
 

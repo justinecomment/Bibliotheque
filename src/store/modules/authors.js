@@ -1,5 +1,4 @@
 import Authors from '../../data/Authors';
-import route from '../../routes';
 
 const state={
   authors:[]
@@ -12,8 +11,8 @@ const getters = {
 };
 
 const mutations = {
-  'SET_AUTHORS'(state, author){
-    state.authors = author;
+  'SET_AUTHORS'(state, authors){
+    state.authors = authors;
   },
   'ADD_AUTHOR' (state, author){
     state.authors.push(author) ;    
@@ -26,7 +25,6 @@ const actions = {
   },
   addAuthor: ({commit}, author) => {    
     commit('ADD_AUTHOR', author);
-    // route.push('/books')
   }
 };
 

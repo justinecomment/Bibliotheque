@@ -7,6 +7,7 @@ import UserCollections from './modules/userCollections';
 import UserFriends from './modules/userFriends';
 import Authentication from './modules/authentication';
 import Categories from './modules/Categories';
+import Styles from './modules/styles';
 
 Vue.use(Vuex);
 
@@ -18,6 +19,7 @@ export default new Vuex.Store({
     UserCollections,
     UserFriends,
     Authors,
-    Categories
+    Categories,
+    Styles
   }
 });

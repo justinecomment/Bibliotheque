@@ -17,7 +17,7 @@ const mutations = {
 };
 
 const actions = {
-  initCategories: ({commit, rootState, dispatch}) => {
+  initCategories: ({commit}) => {
     commit('SET_CATEGORIES', Categories);
   }
 };

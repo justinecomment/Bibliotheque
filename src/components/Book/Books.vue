@@ -2,18 +2,19 @@
   <div id="Books">
     <h6>Livres</h6>
 
-    <b-button @click="openModal" variant="link">
+    <b-button @click="openModal = true" variant="link">
       <i class="fas fa-plus iconAdd" v-b-tooltip.hover title="Ajouter un livre"></i>
     </b-button>
+
     <!-- MODAL -->
-    <b-modal v-model="modalShow" ref="myModalRef" hide-footer>
+    <b-modal v-model="openModal" ref="myModalRef" hide-footer style="z-index: 2">
       <div class="d-block text-center">
         <h6>Ajouter un livre</h6>
       </div>
-      <app-Book-Add v-on:closeModal="hideModal" :modalShow="modalShow"></app-Book-Add>
+      <app-Book-Add @onclosemodal="jeferme" :open-modal="openModal"></app-Book-Add>
     </b-modal>
     <!-- -->
-    
+
     <section class="sectionSearch">
       <i class="fas fa-search"></i>
       <input placeholder="Rechercher un livre" value="" />
@@ -29,16 +30,6 @@
             <md-button>
               <md-icon>delete</md-icon>
             </md-button>
-            <!-- <router-link to="">
-              <md-button><md-icon>edit</md-icon></md-button>
-            </router-link>
-            <md-button>
-              <md-icon>share</md-icon>
-            </md-button>
-            <md-button>
-              <md-icon>add</md-icon>
-              <md-tooltip md-direction="top">Ajouter à mes livres</md-tooltip>
-            </md-button> -->
           </div>
         </md-table-toolbar>
 
@@ -63,7 +54,7 @@ export default {
   data(){
     return {
       selected: [],
-      modalShow: false
+      openModal: false
     }
   },
   components:{
@@ -83,11 +74,11 @@ export default {
       count > 1 ? plural = 's' : plural = '';
       return `${count} livre${plural} selectionné${plural}`
     },
-    openModal () {
-      this.modalShow = true;
-    },
-    hideModal () {
-      this.modalShow = false;
+    // openModal () {
+    //   this.openModal = true;
+    // },
+    jeferme () {
+      this.openModal = false;
     },
     addToUserBook () {
       // return this.$store.dispatch('addToUserBook', userBook);
@@ -139,6 +130,8 @@ export default {
     font-weight: bold;
     text-transform: uppercase;
   }
+
+  
 
 
 </style>
