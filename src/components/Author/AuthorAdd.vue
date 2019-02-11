@@ -1,14 +1,51 @@
 <template>
   <div id="AddForm">
     <section>
-      <form @submit="submitHandle"> 
-        <div v-for="(data, index) in formData" :key="index">
-          <md-field :class="{'md-invalid' : submitted && !data.isValid }">
-            <label>{{data.name}}</label>
-            <md-input v-model="data.value" @change="data.isValid = true"></md-input>
-            <span class="md-error errors" v-if="!data.value">champs requis</span>
-          </md-field>
-        </div>
+      <form @submit.prevent="submitHandle"> 
+        
+        <md-field :class="{'md-invalid': $v.name.$error }" class="validators">
+          <label>Nom</label>
+          <md-input 
+            @change="$v.name.$touch()" 
+            :class="{'md-invalid': !$v.name.$invalid }" 
+            v-model="$v.name.$model"></md-input>
+          <span class="md-error" v-if="$v.name.$error">champs requis</span>
+        </md-field>
+
+        <md-field :class="{'md-invalid': $v.firstname.$error }" class="validators">
+          <label>Prénom</label>
+          <md-input 
+            @change="$v.firstname.$touch()" 
+            :class="{'md-invalid': !$v.firstname.$invalid }" 
+            v-model="$v.firstname.$model"></md-input>
+          <span class="md-error" v-if="$v.firstname.$error">champs requis</span>
+        </md-field>
+
+        <md-field :class="{'md-invalid': $v.yearOfBirth.$error }" class="validators">
+          <label>Année de naissance</label>
+          <md-select v-model="$v.yearOfBirth.$model">
+            <md-option v-for="number in years" :key="number" :value="number">{{number}}</md-option>
+          </md-select>
+          <span class="md-error" v-if="$v.yearOfBirth.$error">champs requis</span>
+        </md-field>
+
+        <md-field :class="{'md-invalid': $v.yearOfDeath.$error }" class="validators">
+          <label>Année de décès</label>
+          <md-select v-model="$v.yearOfDeath.$model">
+            <md-option v-for="number in years" :key="number" :value="number">{{number}}</md-option>
+          </md-select>
+          <span class="md-error" v-if="$v.yearOfDeath.$error">champs requis</span>
+        </md-field>
+       
+        <md-field :class="{'md-invalid': $v.nativeCountry.$error }" class="validators">
+          <label>Pays de naissance</label>
+          <md-input 
+            @change="$v.nativeCountry.$touch()" 
+            :class="{'md-invalid': !$v.nativeCountry.$invalid }" 
+            v-model="$v.nativeCountry.$model"></md-input>
+          <span class="md-error" v-if="$v.nativeCountry.$error">champs requis</span>
+        </md-field>
+
         <button type="submit">Ajouter</button>
       </form>
     </section>
@@ -16,73 +53,66 @@
 </template>
 
 <script>
+import { required, validations, between } from 'vuelidate/lib/validators';
+
 export default {
   props:[
-    'modalShow'
+    'openModal'
   ],
   data(){
     return{
-      icon : 'check',
-      errors : null,
-      submitted: false,
-      formData:[
-        {
-          name: 'name',
-          value: '',
-          isValid: false
-        },
-        {
-          name: 'firstname',
-          value: '',
-          isValid: false
-        },
-        {
-          name: 'yearOfBirth',
-          value: '',
-          isValid: false
-        },
-        {
-          name: 'yearOfDeath',
-          value: '',
-          isValid: false
-        },
-        {
-          name: 'nativeCountry',
-          value: '',
-          isValid: false
-        }
-      ]
+      name: '',
+      firstname: '',
+      yearOfBirth: '',
+      yearOfDeath: '',
+      nativeCountry: '',
+    }
+  },
+  validations: {
+    name: {
+      required
+    },
+    firstname: {
+      required
+    },
+    yearOfBirth: {
+      required,
+    },
+    yearOfDeath: {
+      required
+    },
+    nativeCountry: {
+      required
     }
   },
   watch:{
-    modalShow(){
-      this.modalShow ? this.reset() : null;
+    openModal(){
+      this.$props.openModal ? this.resetAll() : this.resetAll();
+    }
+  },
+  computed:{
+    years(){
+      let list = [];
+      for( let i = 1800 ; i <= 2019 ; i++ ) {
+        list.push(i);
+      }
+      return this.yearOfBirth = list;
     }
   },
   methods:{
-    reset(){
-      for (let index in this.formData){
-        this.formData[index].value = '';
-      }
-    },
     submitHandle(event){
-      event.preventDefault();
-      this.submitted = true;
-      let newBook = {};
-      let onError = 0;
-
-      this.formData.forEach((element) => {
-        if(element.value !== ''){
-          newBook[element.name] = element.value;
-          element.isValid = true;          
-        } else{
-          onError ++;
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        const newAuthor={
+          name: this.name,
+          firstname: this.firstname,
+          yearOfBirth: this.yearOfBirth,
+          yearOfDeath: this.yearOfDeath,
+          nativeCountry: this.nativeCountry,
         }
-      });
 
-      if(onError === 0){        
-        this.$emit('closeModal');
-        this.$store.dispatch('addBook', newBook);
+        this.$store.dispatch('addAuthor', newAuthor);
+        this.$emit('onclosemodal');
         this.$toasted.show("Auteur ajouté avec succès", { 
           theme: "bubble", 
           position: "top-right", 
@@ -90,12 +120,20 @@ export default {
           type: 'success'
         });
       }
+    },
+    resetAll(){
+      this.$v.$reset();
+      this.name = '';
+      this.firstname = '';
+      this.yearOfBirth = '';
+      this.yearOfDeath = '';
+      this.nativeCountry = '';
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   h6{
     color: #b6b6b6;
   }
@@ -106,10 +144,6 @@ export default {
     align-items: center;
   }
 
-  .md-field:after, .md-field:before{
-    border: 0.5px solid grey;
-  }
-
   button{
     background-color: #37cce5;
     padding: 8px 39px;
@@ -118,7 +152,6 @@ export default {
     color: #fff;
     width: 100%;
   }
-
 </style>
 
 

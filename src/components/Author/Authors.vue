@@ -1,15 +1,16 @@
 <template>
   <div id="Books">
     <h6>AUTEURS</h6>
-    <b-button @click="openModal" variant="link">
+    <b-button @click="openModal = true" variant="link">
       <i class="fas fa-plus iconAdd" v-b-tooltip.hover title="Ajouter un Auteur"></i>
     </b-button>
+
     <!-- MODAL -->
-    <b-modal v-model="modalShow" ref="myModalRef" hide-footer>
+    <b-modal v-model="openModal" ref="myModalRef" hide-footer style="z-index: 2; width: 50%">
       <div class="d-block text-center">
         <h6>Ajouter un Auteur</h6>
       </div>
-      <app-Author-Add v-on:closeModal="hideModal" :modalShow="modalShow"></app-Author-Add>
+      <app-Author-Add @onclosemodal="openModal = false" :open-modal="openModal"></app-Author-Add>
     </b-modal>
     <!-- -->
 
@@ -19,25 +20,14 @@
     </section>
 
     <section>
-      <md-table v-model="authors" md-card @md-selected="onSelect">
+      <md-table v-model="authors" md-card @md-selected="(items) => selected = items">
         <md-table-toolbar></md-table-toolbar>
-        
         <md-table-toolbar slot="md-table-alternate-header" slot-scope="{ count }">
           <div class="md-toolbar-section-start">{{ getAlternateLabel(count) }}</div>
 
           <div class="md-toolbar-section-end">
             <md-button>
-              <md-icon>delete</md-icon>
-            </md-button>
-            <router-link>
-              <md-button><md-icon>edit</md-icon></md-button>
-            </router-link>
-            <md-button>
-              <md-icon>share</md-icon>
-            </md-button>
-            <md-button>
-              <md-icon>add</md-icon>
-              <md-tooltip md-direction="top">Ajouter à mes auteurs</md-tooltip>
+              <md-icon v-b-tooltip.hover title="Ajouter à mes auteurs">add</md-icon>
             </md-button>
           </div>
         </md-table-toolbar>
@@ -62,7 +52,7 @@ export default {
   data(){
     return {
       selected: [],
-      modalShow: false
+      openModal: false
     }
   },
   components:{
@@ -74,19 +64,10 @@ export default {
     }
   },
   methods:{
-    onSelect (items) {
-        this.selected = items
-    },
     getAlternateLabel (count) {
       let plural = ''
       count > 1 ? plural = 's' : plural = '';
-      return `${count} livre${plural} selectionné${plural}`
-    },
-    openModal () {
-      this.modalShow = true;
-    },
-    hideModal () {
-      this.modalShow = false;
+      return `${count} auteur${plural} selectionné${plural}`
     }
   }
 }
@@ -98,47 +79,49 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    .sectionSearch{
+      background-color: #eaeaea;
+      color: #bebebe;
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 0px;
+    }
+
+    section{
+      width: 100%;
+    }
+
+    input{
+      border: none;
+      background-color: transparent;
+      padding-left: 10px;
+    }
+
+    table{
+      color: #848484;
+    }
+
+    .md-table + .md-table {
+      margin-top: 16px
+    }
+
+    .iconAdd i, .iconAdd{
+      color: #37cce5 !important;
+      font-weight: bold;
+      font-size: 30px;
+    }
+
+    h6{
+      color: #aa87cb;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
   }
 
-  .sectionSearch{
-    background-color: #eaeaea;
-    color: #bebebe;
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 0px;
-  }
-
-  section{
-    width: 100%;
-  }
-
-  input{
-    border: none;
-    background-color: transparent;
-    padding-left: 10px;
-  }
-
-  table{
-    color: #848484;
-  }
-
-  .md-table + .md-table {
-    margin-top: 16px
-  }
-
-  .iconAdd i, .iconAdd{
-    color: #37cce5 !important;
-    font-weight: bold;
-    font-size: 30px;
-  }
-
-  h6{
-    color: #aa87cb;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
+  
 
 </style>
 
