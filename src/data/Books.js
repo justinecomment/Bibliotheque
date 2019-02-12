@@ -3,19 +3,19 @@ export default [
     id:1,
     name: 'book name', 
     cover: 'book cover', 
-    author: 1,  // afficher nom de l'auteur ayant cet ID
+    author: 1,
     resume: 'book resume', 
-    category: 2, // afficher nom de la catégorie
-    style:[1,2] // afficher les noms des styles du livre
+    category: 2, 
+    style: 1
   },
   { 
     id:2,
     name: 'book name', 
     cover: 'book cover', 
-    author: 2,  // afficher nom de l'auteur ayant cet ID
+    author: 2, 
     resume: 'book resume', 
-    category: 1, // afficher nom de la catégorie
-    style:[2] //
+    category: 1, 
+    style: 2
   }
 ];
 

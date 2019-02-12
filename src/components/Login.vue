@@ -113,15 +113,10 @@
   #Login{
     display: flex;
     flex-direction: column;
-    background-color: #fff;
+    margin: auto;
     position: relative;
-    border-radius: 2px;
     padding: 20px;
-    box-shadow: 2px 2px #cdcdcd;
     max-width: 500px;
-    min-height: 300px;
-    width: 100%;
-    margin-top: -25px;
   }
 
   form{

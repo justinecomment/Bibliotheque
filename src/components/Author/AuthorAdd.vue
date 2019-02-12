@@ -9,7 +9,8 @@
             @change="$v.name.$touch()" 
             :class="{'md-invalid': !$v.name.$invalid }" 
             v-model="$v.name.$model"></md-input>
-          <span class="md-error" v-if="$v.name.$error">champs requis</span>
+          <span class="md-error" v-if="!$v.name.required">champs requis</span>
+          <span class="md-error" v-if="!$v.name.alpha">uniquement des lettres</span>
         </md-field>
 
         <md-field :class="{'md-invalid': $v.firstname.$error }" class="validators">
@@ -18,23 +19,30 @@
             @change="$v.firstname.$touch()" 
             :class="{'md-invalid': !$v.firstname.$invalid }" 
             v-model="$v.firstname.$model"></md-input>
-          <span class="md-error" v-if="$v.firstname.$error">champs requis</span>
+          <span class="md-error" v-if="!$v.firstname.required">champs requis</span>
+          <span class="md-error" v-if="!$v.firstname.alpha">uniquement des lettres</span>
         </md-field>
 
         <md-field :class="{'md-invalid': $v.yearOfBirth.$error }" class="validators">
           <label>Année de naissance</label>
-          <md-select v-model="$v.yearOfBirth.$model">
-            <md-option v-for="number in years" :key="number" :value="number">{{number}}</md-option>
-          </md-select>
-          <span class="md-error" v-if="$v.yearOfBirth.$error">champs requis</span>
+          <md-input 
+            @change="$v.yearOfBirth.$touch()" 
+            :class="{'md-invalid': !$v.yearOfBirth.$invalid }" 
+            v-model="$v.yearOfBirth.$model"></md-input>
+          <span class="md-error" v-if="!$v.yearOfBirth.required">champs requis</span>
+          <span class="md-error" v-if="!$v.yearOfBirth.numeric">only numbers</span>
+          <span class="md-error" v-if="!$v.yearOfBirth.minLength || !$v.yearOfBirth.maxLength">4 numbers</span>
         </md-field>
 
         <md-field :class="{'md-invalid': $v.yearOfDeath.$error }" class="validators">
           <label>Année de décès</label>
-          <md-select v-model="$v.yearOfDeath.$model">
-            <md-option v-for="number in years" :key="number" :value="number">{{number}}</md-option>
-          </md-select>
-          <span class="md-error" v-if="$v.yearOfDeath.$error">champs requis</span>
+          <md-input 
+            @change="$v.yearOfDeath.$touch()" 
+            :class="{'md-invalid': !$v.yearOfDeath.$invalid }" 
+            v-model="$v.yearOfDeath.$model"></md-input>
+          <span class="md-error" v-if="!$v.yearOfDeath.required">champs requis</span>
+          <span class="md-error" v-if="!$v.yearOfDeath.numeric">only numbers</span>
+          <span class="md-error" v-if="!$v.yearOfDeath.minLength || !$v.yearOfDeath.maxLength">4 numbers</span>
         </md-field>
        
         <md-field :class="{'md-invalid': $v.nativeCountry.$error }" class="validators">
@@ -43,7 +51,8 @@
             @change="$v.nativeCountry.$touch()" 
             :class="{'md-invalid': !$v.nativeCountry.$invalid }" 
             v-model="$v.nativeCountry.$model"></md-input>
-          <span class="md-error" v-if="$v.nativeCountry.$error">champs requis</span>
+          <span class="md-error" v-if="!$v.nativeCountry.required">champs requis</span>
+          <span class="md-error" v-if="!$v.nativeCountry.alpha">uniquement des lettres</span>
         </md-field>
 
         <button type="submit">Ajouter</button>
@@ -53,7 +62,7 @@
 </template>
 
 <script>
-import { required, validations, between } from 'vuelidate/lib/validators';
+import { required, validations, between, numeric, minLength, maxLength, alpha } from 'vuelidate/lib/validators';
 
 export default {
   props:[
@@ -70,33 +79,33 @@ export default {
   },
   validations: {
     name: {
-      required
+      required,
+      alpha
     },
     firstname: {
-      required
+      required,
+      alpha
     },
     yearOfBirth: {
       required,
+      numeric,
+      minLength : minLength(4),
+      maxLength : maxLength(4),
     },
     yearOfDeath: {
-      required
+      required,
+      numeric,
+      minLength : minLength(4),
+      maxLength : maxLength(4),
     },
     nativeCountry: {
-      required
+      required,
+      alpha
     }
   },
   watch:{
     openModal(){
       this.$props.openModal ? this.resetAll() : this.resetAll();
-    }
-  },
-  computed:{
-    years(){
-      let list = [];
-      for( let i = 1800 ; i <= 2019 ; i++ ) {
-        list.push(i);
-      }
-      return this.yearOfBirth = list;
     }
   },
   methods:{

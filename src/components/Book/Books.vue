@@ -28,7 +28,7 @@
 
           <div class="md-toolbar-section-end">
             <md-button>
-              <md-icon>delete</md-icon>
+              <md-icon  v-b-tooltip.hover title="Ajouter à mes livres">add</md-icon>
             </md-button>
           </div>
         </md-table-toolbar>

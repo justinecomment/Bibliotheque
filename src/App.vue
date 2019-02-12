@@ -2,7 +2,7 @@
   <div id="app">
     <div class="header">
       <app-navigation></app-navigation>
-      <router-link :to="{name: 'Home'}">Bibliotheque</router-link>
+      <router-link :to="{name: 'Home'}" class="title">Bibliotheque</router-link>
     </div>
     
     <div class="allContent">
@@ -36,35 +36,37 @@ export default {
     background-repeat: no-repeat;
     background-size: contain;
     background-color: #eef0f5;
-  }
 
-  .header #Navigation{
-    margin: 0px 40px;
+    
   }
 
   .header{
-    position: relative;
-    display: flex;
-    flex-direction: column;
-  }
+      position: relative;
+      display: flex;
+      flex-direction: column;
 
-  .header > a{
-    top: 100px;
-    font-size: 25px;
-    text-decoration: none;
-    color: #fff !important;
-    text-align: center;
-  }
+      & #Navigation{
+        margin: 0px 40px;
+      }
 
-  .allContent{
-    margin-top: 12%;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 2px 2px 0px #cbcbcb;
-    margin-left: 10%;
-    margin-right: 10%;
-    padding: 20px;
-  }
+      &  > a{
+        top: 100px;
+        font-size: 25px;
+        text-decoration: none;
+        color: #fff !important;
+        text-align: center;
+      }
+    }
+
+    .allContent{
+      margin-top: 12%;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 2px 2px 0px #cbcbcb;
+      margin-left: 10%;
+      margin-right: 10%;
+      padding: 20px;
+    }
 
   @media only screen and (max-width: 600px) {
     .allContent{
@@ -75,8 +77,14 @@ export default {
     header{
       font-size: 3em;
     }
+
+    #Navigation{
+      margin: 0px !important;
+    }
+
+    .title{
+      display:none;
+    }
+    
   }
-  
-
-
 </style>

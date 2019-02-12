@@ -1,14 +1,19 @@
 <template>
   <div id="Navigation">
 
-    <i class="fas fa-bars" @click="openNav = false" v-if="burgerIcon"></i>
-    <app-nav-item v-if="menuIsOpen"></app-nav-item>
-    <hr>
+    <app-nav-item v-if="!mobile"></app-nav-item>
 
-    <div class="burgerNav" v-if="!openNav && burgerIcon">
-      <i @click="openNav = true" class="fas fa-times"></i>
-      <app-nav-item v-if="!menuIsOpen"></app-nav-item>
-    </div>
+    <md-toolbar v-else class="md-primary" md-elevation="0">
+      <div class="md-toolbar-section-start" @click="openMenu = !openMenu">
+        <md-button class="md-icon-button" >
+          <md-icon>menu</md-icon>
+        </md-button>
+         <span class="md-title">Bibliotheque</span>
+      </div>
+      <div class="md-toolbar-row md-toolbar-offset md-primary">
+        <app-nav-item v-if="openMenu" @click.native="openMenu = false"></app-nav-item>
+      </div>
+    </md-toolbar>
 
   </div>
 </template>
@@ -17,59 +22,34 @@
 import NavItem from './Navigation-item';
 import services from '../../services/services';
 
-
 export default {
   data(){
     return{
-      burgerIcon: true,
-      menuIsOpen: false,
-      openNav: true
+      openMenu : false,
+      mobile : false
     }
   },
   components:{
     appNavItem: NavItem
   },
   created(){
-    window.addEventListener('resize', this.isMobile);
+    window.addEventListener('resize', () =>{
+      services.isMobile()? this.mobile = true : this.mobile = false;
+    });
     this.isMobile();
   },
   methods:{
     isMobile(){
-      if(services.isMobile()){
-        this.burgerIcon = true;
-        this.menuIsOpen = false;
-      } else{
-        this.burgerIcon = false;
-        this.menuIsOpen = true;
-      }
-    }
+      services.isMobile() ? this.mobile = true: this.mobile = false;
+    }, 
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   #Navigation{
     display: flex;
     flex-direction: column;
-  }
-
-  span, i{
-    cursor: pointer;
-  }
-
-  .burgerNav{
-    background-color: #7e49b5;
-    width: 100%;
-    margin-left: -50px;
-    margin-top: -9px;
-    position: absolute;
-    padding: 0;
-    z-index: 2;
-  }
-
-  hr{
-    border: 0.5px solid #fff;
-    width: 100%;
   }
 </style>
 
