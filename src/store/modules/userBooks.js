@@ -1,4 +1,5 @@
 import UserBooks from '../../data/UserBooks';
+import routes from '../../routes';
 
 const state={
   userBooks:[]
@@ -20,8 +21,9 @@ const mutations = {
   'USER_DELETE_BOOK' (state, userBook) {
     state.userBooks.splice(0,1);
   },
-  'ADD_TO_USERBOOK' (state, userBook) {
-    state.userBooks.push(userBook)
+  'ADD_TO_USERBOOK' (state, book) {
+    state.userBooks.push(book);
+    routes.push({name: 'UserBook' });
   }
 };
 
@@ -35,8 +37,15 @@ const actions = {
   userDeleteBook: ({commit}, userBook) => {
     commit('USER_DELETE_BOOK', userBook)
   },
-  addToUserBook: ({commit}, book) => {
-    commit('ADD_TO_USERBOOK', book);
+  addToUserBook: ({commit, rootState}, isUserBook) => {
+    const books = rootState.Books.books;
+    let id;
+    for(let index in isUserBook){
+      id = isUserBook[index];
+    }
+    let goodBook = books[id];
+    console.log(goodBook);
+    commit('ADD_TO_USERBOOK', goodBook);
   }
 };
 

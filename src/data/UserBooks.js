@@ -1,6 +1,6 @@
 export default [
   { 
-    isActive: true, 
+    id: 1, 
     name: 'user name', 
     cover: 'user cover', 
     author: 'user author', 
@@ -8,7 +8,7 @@ export default [
     format: 'user format' 
   },
   { 
-    isActive: false, 
+    id: 2, 
     name: 'user name', 
     cover: 'user cover', 
     author: 'user author', 

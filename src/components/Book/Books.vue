@@ -21,19 +21,18 @@
     </section>
 
     <section>
-      <md-table v-model="books" md-card @md-selected="(items) => selected = items">
-        <md-table-toolbar></md-table-toolbar>
-        <md-table-toolbar slot="md-table-alternate-header" slot-scope="{ count }">
-          <div class="md-toolbar-section-start">{{ getAlternateLabel(count) }}</div>
+       <span v-if="selected.length > 0">
+          <div>{{ getAlternateLabel() }}</div>
+          <md-button @click.native="AddToUserBook">
+            <md-icon v-b-tooltip.hover title="Ajouter à mes livres">add</md-icon>
+          </md-button>
+        </span>
 
-          <div class="md-toolbar-section-end">
-            <md-button>
-              <md-icon  v-b-tooltip.hover title="Ajouter à mes livres">add</md-icon>
-            </md-button>
-          </div>
-        </md-table-toolbar>
-
-        <md-table-row slot="md-table-row" slot-scope="{ item }"  md-selectable="multiple" md-auto-select>
+      <md-table v-model="books" md-card @md-selected="onSelect">
+        <md-table-row slot="md-table-row" slot-scope="{ item }" md-auto-select>
+          <md-table-cell md-label="Id" md-sort-by="id">
+            <md-checkbox v-model="selected" :value="item.id"></md-checkbox>
+          </md-table-cell>
           <md-table-cell md-label="Nom" md-sort-by="name">{{ item.name }}</md-table-cell>
           <md-table-cell md-label="Auteur" md-sort-by="author">{{ item.author }}</md-table-cell>
           <md-table-cell md-label="Cover" md-sort-by="cover">{{ item.cover }}</md-table-cell>
@@ -43,7 +42,6 @@
         </md-table-row>
       </md-table>
     </section>
-
   </div>
 </template>
 
@@ -66,10 +64,17 @@ export default {
     }
   },
   methods:{
-    getAlternateLabel (count) {
+    onSelect (item) {
+      this.selected = item;
+    },
+    getAlternateLabel () {
+      let numberItems = this.selected.length;
       let plural = ''
-      count > 1 ? plural = 's' : plural = '';
-      return `${count} livre${plural} selectionné${plural}`
+      numberItems > 1 ? plural = 's' : plural = '';
+      return `${numberItems} livre${plural} selectionné${plural}`
+    },
+    AddToUserBook(){
+      this.$store.dispatch('addToUserBook', this.selected);
     }
   }
 }
@@ -100,11 +105,31 @@ export default {
 
       section{
         width: 100%;
+        position: relative;
         
         input{
           border: none;
           background-color: transparent;
           padding-left: 10px;
+        }
+
+        span{
+          background-color: #f8d3d3; 
+          display:flex;
+          align-items: center;
+          height: 50px;
+          padding: 0px 20px;
+          position: absolute;
+          z-index: 2;
+          width: 100%;
+
+          div{
+            flex: 1;
+          }
+        }
+
+        table{
+          margin-top: 40px;
         }
       }
 
