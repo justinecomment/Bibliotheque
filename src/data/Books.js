@@ -1,7 +1,7 @@
 export default [
   { 
-    id:1,
-    name: 'book name', 
+    id: 1,
+    name: 'book name 1', 
     cover: 'book cover', 
     author: 1,
     resume: 'book resume', 
@@ -9,8 +9,8 @@ export default [
     style: 1
   },
   { 
-    id:2,
-    name: 'book name', 
+    id: 2,
+    name: 'book name 2', 
     cover: 'book cover', 
     author: 2, 
     resume: 'book resume', 

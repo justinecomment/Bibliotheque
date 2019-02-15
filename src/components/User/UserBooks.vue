@@ -7,37 +7,21 @@
     </section>
 
     <section>
-      <div class="book" v-for="(element, index) in userBooks" :key="index">
-        <p>{{element.name}}</p>
+      <div class="book" v-for="(element, key) in userBooks" :key="key">
+        <p>{{element.idBook.name}}</p>
       </div>
     </section>
-  
   </div>
 </template>
 
 <script>
+import services from '../../services/services';
+
 export default {
-  data(){
-    return {
-      selected: [],
-    }
-  },
-  created(){
-    return this.$store.dispatch('initUserBooks');
-  },
   computed:{
     userBooks(){
-      return this.$store.getters.userBooks;
-    }
-  },
-  methods:{
-    onSelect (items) {
-        this.selected = items
-    },
-    getAlternateLabel (count) {
-      let plural = ''
-      count > 1 ? plural = 's' : plural = '';
-      return `${count} livre${plural} selectionné${plural}`
+      let userBooks = this.$store.getters.userBooks;
+      return services.convertUserbookIdToItem(userBooks);
     }
   }
 }

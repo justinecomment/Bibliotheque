@@ -21,18 +21,29 @@
     </section>
 
     <section>
-       <span v-if="selected.length > 0">
+        <div v-if="selected.length > 0" class="selected">
           <div>{{ getAlternateLabel() }}</div>
-          <md-button @click.native="AddToUserBook">
+          <div>{{ selected }}</div>
+          <md-button @click.native="AddToUserBook()">
             <md-icon v-b-tooltip.hover title="Ajouter à mes livres">add</md-icon>
           </md-button>
-        </span>
+        </div>
 
-      <md-table v-model="books" md-card @md-selected="onSelect">
-        <md-table-row slot="md-table-row" slot-scope="{ item }" md-auto-select>
-          <md-table-cell md-label="Id" md-sort-by="id">
-            <md-checkbox v-model="selected" :value="item.id"></md-checkbox>
+      <md-table md-card style="margin-top: 40px">
+        <md-table-head></md-table-head>
+        <md-table-head>ID</md-table-head>
+        <md-table-head>Nom</md-table-head>
+        <md-table-head>Auteur</md-table-head>
+        <md-table-head>Cover</md-table-head>
+        <md-table-head>Résumé</md-table-head>
+        <md-table-head>categorie</md-table-head>
+        <md-table-head>style</md-table-head>
+        
+        <md-table-row v-for="(item,index) in books" :key="index"  md-selection md-autoselect >
+          <md-table-cell md-sort-by="id">
+            <md-checkbox v-model="selected" :value="index + 1"></md-checkbox>
           </md-table-cell>
+          <md-table-cell md-label="id" md-sort-by="id">{{ item.id }}</md-table-cell>
           <md-table-cell md-label="Nom" md-sort-by="name">{{ item.name }}</md-table-cell>
           <md-table-cell md-label="Auteur" md-sort-by="author">{{ item.author }}</md-table-cell>
           <md-table-cell md-label="Cover" md-sort-by="cover">{{ item.cover }}</md-table-cell>
@@ -47,6 +58,7 @@
 
 <script>
 import BookAdd from './BookAdd.vue';
+import services from '../../services/services';
 
 export default {
   data(){
@@ -60,21 +72,32 @@ export default {
   },
   computed:{
     books(){
-      return this.$store.getters.books;
+      let books = this.$store.getters.books;
+      return services.convertBooksIdToItems(books);
     }
   },
   methods:{
-    onSelect (item) {
-      this.selected = item;
-    },
     getAlternateLabel () {
       let numberItems = this.selected.length;
       let plural = ''
       numberItems > 1 ? plural = 's' : plural = '';
       return `${numberItems} livre${plural} selectionné${plural}`
     },
-    AddToUserBook(){
-      this.$store.dispatch('addToUserBook', this.selected);
+    AddToUserBook () {
+      let formData={
+        id: this.$store.getters.userBooks.length + 1,
+        idBook : parseInt(this.selected)
+      };
+
+      this.$store.dispatch('addToUserBook', formData).then( () => {
+        this.selected = [];
+        this.$toasted.show("Livre ajouté avec succès", { 
+          theme: "bubble", 
+          position: "top-right", 
+          duration : 3000,
+          type: 'success'
+        });
+      });
     }
   }
 }
@@ -113,7 +136,7 @@ export default {
           padding-left: 10px;
         }
 
-        span{
+        .selected{
           background-color: #f8d3d3; 
           display:flex;
           align-items: center;
@@ -126,10 +149,6 @@ export default {
           div{
             flex: 1;
           }
-        }
-
-        table{
-          margin-top: 40px;
         }
       }
 

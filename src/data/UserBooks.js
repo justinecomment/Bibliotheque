@@ -1,19 +1,11 @@
 export default [
   { 
-    id: 1, 
-    name: 'user name', 
-    cover: 'user cover', 
-    author: 'user author', 
-    resume: 'user resume', 
-    format: 'user format' 
+    id: 1,
+    idBook: 2
   },
   { 
-    id: 2, 
-    name: 'user name', 
-    cover: 'user cover', 
-    author: 'user author', 
-    resume: 'user resume', 
-    format: 'user format'
+    id: 2,
+    idBook: 1
   },
 ];
 

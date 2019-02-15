@@ -117,6 +117,7 @@ export default {
       this.$v.$touch();
       if (!this.$v.$invalid) {
         const newBook={
+          id: this.$store.getters.books.length + 1, 
           name: this.name, 
           cover: this.cover, 
           author: this.author,  
@@ -124,7 +125,7 @@ export default {
           category: this.category, 
           style: this.style
         }
-        
+
         this.$store.dispatch('addBook', newBook);
         this.$emit("onclosemodal");
         this.$toasted.show("Livre ajouté avec succès", { 
